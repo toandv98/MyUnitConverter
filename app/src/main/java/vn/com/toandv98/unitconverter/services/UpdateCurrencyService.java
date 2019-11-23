@@ -10,9 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,6 +23,8 @@ import vn.com.toandv98.unitconverter.data.entities.LastRates;
 import vn.com.toandv98.unitconverter.data.local.PreferencesHelper;
 import vn.com.toandv98.unitconverter.data.remote.RetrofitClient;
 
+import static vn.com.toandv98.unitconverter.utils.Constrants.ACTION_UPDATE_RATES;
+import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_RESULT_MSG;
 import static vn.com.toandv98.unitconverter.utils.Constrants.FIXED_IO_API_KEY;
 import static vn.com.toandv98.unitconverter.utils.Constrants.MAP_QUERY_KEY;
 
@@ -57,7 +60,7 @@ public class UpdateCurrencyService extends JobIntentService {
         final NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
         startForeground(NOFTIFICATION_UPDATE_RATES_ID, builder.build());
 
-        Map<String, String> mapQuery = new HashMap<>();
+        Map<String, String> mapQuery = new TreeMap<>();
         mapQuery.put(MAP_QUERY_KEY, FIXED_IO_API_KEY);
 
         RetrofitClient.getApiService().getLastRates(mapQuery).enqueue(new Callback<LastRates>() {
@@ -70,6 +73,10 @@ public class UpdateCurrencyService extends JobIntentService {
                             .setProgress(0, 0, false)
                             .setUsesChronometer(false);
                     managerCompat.notify(NOFTIFICATION_UPDATE_RATES_ID, builder.build());
+
+                    Intent broadcastIntent = new Intent(ACTION_UPDATE_RATES);
+                    broadcastIntent.putExtra(EXTRA_NAME_RESULT_MSG, getString(R.string.msg_update_data_successfully));
+                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
                 }
             }
 
@@ -79,8 +86,11 @@ public class UpdateCurrencyService extends JobIntentService {
                 builder.setContentText(t.getMessage())
                         .setProgress(100, 100, false)
                         .setUsesChronometer(false);
-                ;
                 managerCompat.notify(NOFTIFICATION_UPDATE_RATES_ID, builder.build());
+
+                Intent broadcastIntent = new Intent(ACTION_UPDATE_RATES);
+                broadcastIntent.putExtra(EXTRA_NAME_RESULT_MSG, t.getMessage());
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
             }
         });
     }

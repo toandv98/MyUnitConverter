@@ -39,6 +39,17 @@ public final class ConvertUtils {
         return getDecimalFormat().format(result);
     }
 
+    private static DecimalFormat getDecimalFormat() {
+        DecimalFormat formatter = new DecimalFormat();
+        formatter.setMaximumFractionDigits(5);
+        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
+        symbols.setDecimalSeparator('.');
+        formatter.setGroupingUsed(true);
+        symbols.setGroupingSeparator(',');
+        formatter.setDecimalFormatSymbols(symbols);
+        return formatter;
+    }
+
     private static double convertTemperatureValue(double value, Unit from, Unit to) {
         double result = value;
         if (from.getId() != to.getId()) {
@@ -82,17 +93,6 @@ public final class ConvertUtils {
         }
 
         return result;
-    }
-
-    private static DecimalFormat getDecimalFormat() {
-        DecimalFormat formatter = new DecimalFormat();
-        formatter.setMaximumFractionDigits(12);
-        DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
-        symbols.setDecimalSeparator('.');
-        formatter.setGroupingUsed(true);
-        symbols.setGroupingSeparator(',');
-        formatter.setDecimalFormatSymbols(symbols);
-        return formatter;
     }
 
     private static double toCelsius(int fromId, double value) {

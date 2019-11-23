@@ -10,8 +10,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import vn.com.toandv98.unitconverter.data.entities.LastRates;
 
@@ -51,7 +51,7 @@ public class RatesDeserializer implements JsonDeserializer<LastRates> {
         }
 
         final JsonObject parametersObject = paramsElement.getAsJsonObject();
-        final Map<String, Double> rates = new HashMap<>();
+        final Map<String, Double> rates = new TreeMap<>();
         for (Map.Entry<String, JsonElement> entry : parametersObject.entrySet()) {
             String key = entry.getKey();
             Double value = entry.getValue().getAsDouble();

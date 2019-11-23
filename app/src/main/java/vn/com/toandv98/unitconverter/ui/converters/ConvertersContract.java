@@ -28,7 +28,9 @@ public interface ConvertersContract {
     }
 
     interface Presenter extends IBasePresenter {
-        void onReceiveId(int id);
+        void onReceivedConversionId(int id);
+
+        void onReceiveUpdateRates(String msg);
 
         void onSwapButtonClick();
 

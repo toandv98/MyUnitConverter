@@ -22,7 +22,7 @@ public class ConvertersPresenter extends BasePresenter<ConvertersContract.View, 
     }
 
     @Override
-    public void onReceiveId(int id) {
+    public void onReceivedConversionId(int id) {
 
         StateUtils.setConversionId(id);
         StateUtils.setCurrentInput(DEFAULT_INPUT);
@@ -37,14 +37,17 @@ public class ConvertersPresenter extends BasePresenter<ConvertersContract.View, 
         }
 
         Unit unit = units.get(0);
-        int labelRes = unit.getLabelRes();
-
         StateUtils.setInputUnit(unit);
         StateUtils.setResultUnit(unit);
 
         view.loadUnit(units);
-        view.updateInputUnit(labelRes);
-        view.updateResultUnit(labelRes);
+        view.updateInputUnit(unit.getLabelRes());
+        view.updateResultUnit(unit.getLabelRes());
+    }
+
+    @Override
+    public void onReceiveUpdateRates(String msg) {
+        view.showMessage(msg);
     }
 
     @Override

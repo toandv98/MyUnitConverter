@@ -7,8 +7,8 @@
     <dimen name="card_radius_10dp">10dp</dimen>
     <dimen name="margin_10dp">10dp</dimen>
 
-    <dimen name="bottom_bg_header">503dp</dimen>
-    <dimen name="bottom_bg_header_">500dp</dimen>
+    <dimen name="bottom_bg_header">553dp</dimen>
+    <dimen name="bottom_bg_header_">550dp</dimen>
     <dimen name="left_right_bg_header_">-400dp</dimen>
     <dimen name="top_bg_header_">-200dp</dimen>
     <dimen name="left_right_bg_header">-300dp</dimen>
@@ -16,4 +16,5 @@
     <dimen name="margin_15dp">15dp</dimen>
     <dimen name="margin_20dp">20dp</dimen>
     <dimen name="card_radius_20dp">20dp</dimen>
+    <dimen name="card_radius_5dp">5dp</dimen>
 </resources>

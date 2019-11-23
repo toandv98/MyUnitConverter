@@ -1,126 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_search_unit"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_converters"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:paddingStart="0dp"
-        android:paddingEnd="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_arrow_back_white"
-        app:titleTextAppearance="@style/Toolbar.Title.White" />
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_10dp"
-        android:background="@drawable/bg_rounded_top"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_result_unit">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_unit_from"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_converters"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:scrollbarSize="2dp"
-            android:scrollbars="vertical" />
+            android:background="@color/colorPrimary"
+            android:paddingStart="0dp"
+            android:paddingEnd="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_arrow_back_white"
+            app:titleTextAppearance="@style/Toolbar.Title.White" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_unit_to"
+        <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:background="@drawable/bg_rounded_top"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_result_unit">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_unit_from"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fadeScrollbars="false"
+                android:scrollbarSize="1dp"
+                android:scrollbars="vertical" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_unit_to"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_weight="1"
+                android:fadeScrollbars="false"
+                android:scrollbarSize="1dp"
+                android:scrollbars="vertical"
+                android:verticalScrollbarPosition="left" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edt_converters_input"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:scrollbarSize="2dp"
-            android:scrollbars="vertical" />
+            android:layout_marginStart="@dimen/margin_10dp"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginEnd="@dimen/margin_5dp"
+            android:background="@drawable/bg_edit_text"
+            android:ems="10"
+            android:imeOptions="actionDone|flagNoExtractUi"
+            android:inputType="numberDecimal"
+            android:labelFor="@id/edt_converters_input"
+            android:longClickable="false"
+            android:maxLength="@integer/max_input_length"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/edt_converters_result"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_converters"
+            tools:ignore="Autofill" />
 
-    </LinearLayout>
+        <EditText
+            android:id="@+id/edt_converters_result"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_5dp"
+            android:layout_marginTop="@dimen/margin_10dp"
+            android:layout_marginEnd="@dimen/margin_10dp"
+            android:background="@drawable/bg_edit_text"
+            android:cursorVisible="false"
+            android:ems="10"
+            android:focusable="false"
+            android:foreground="?android:selectableItemBackground"
+            android:inputType="numberDecimal"
+            android:labelFor="@id/edt_converters_result"
+            android:longClickable="false"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/edt_converters_input"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_converters"
+            tools:ignore="Autofill,UnusedAttribute" />
 
-    <EditText
-        android:id="@+id/edt_converters_input"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_10dp"
-        android:layout_marginTop="@dimen/margin_10dp"
-        android:layout_marginEnd="@dimen/margin_5dp"
-        android:background="@drawable/bg_edittext"
-        android:ems="10"
-        android:imeOptions="actionDone|flagNoExtractUi"
-        android:inputType="numberDecimal"
-        android:labelFor="@id/edt_converters_input"
-        android:longClickable="false"
-        android:maxLength="@integer/max_input_length"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/edt_converters_result"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_converters"
-        tools:ignore="Autofill" />
+        <TextView
+            android:id="@+id/tv_input_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_10dp"
+            android:textColor="@color/text_color_white"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/edt_converters_input"
+            app:layout_constraintTop_toBottomOf="@+id/edt_converters_input" />
 
-    <EditText
-        android:id="@+id/edt_converters_result"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_5dp"
-        android:layout_marginTop="@dimen/margin_10dp"
-        android:layout_marginEnd="@dimen/margin_10dp"
-        android:background="@drawable/bg_edittext"
-        android:cursorVisible="false"
-        android:ems="10"
-        android:focusable="false"
-        android:foreground="?android:selectableItemBackground"
-        android:inputType="numberDecimal"
-        android:labelFor="@id/edt_converters_result"
-        android:longClickable="false"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/edt_converters_input"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_converters"
-        tools:ignore="Autofill,UnusedAttribute" />
+        <TextView
+            android:id="@+id/tv_result_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_10dp"
+            android:textColor="@color/text_color_white"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/edt_converters_result"
+            app:layout_constraintTop_toBottomOf="@+id/edt_converters_result" />
 
-    <TextView
-        android:id="@+id/tv_input_unit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_10dp"
-        android:textColor="@color/text_color_white"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/edt_converters_input"
-        app:layout_constraintTop_toBottomOf="@+id/edt_converters_input" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_converters_swap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_20dp"
+            android:layout_marginBottom="@dimen/margin_20dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_swap_vert_white" />
 
-    <TextView
-        android:id="@+id/tv_result_unit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_10dp"
-        android:textColor="@color/text_color_white"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/edt_converters_result"
-        app:layout_constraintTop_toBottomOf="@+id/edt_converters_result" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_converters_swap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_20dp"
-        android:layout_marginBottom="@dimen/margin_20dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_swap_vert_white" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
