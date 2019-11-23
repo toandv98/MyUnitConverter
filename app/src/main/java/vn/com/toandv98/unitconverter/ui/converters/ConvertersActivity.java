@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,11 +29,13 @@ import vn.com.toandv98.unitconverter.R;
 import vn.com.toandv98.unitconverter.data.DataManager;
 import vn.com.toandv98.unitconverter.data.entities.Unit;
 import vn.com.toandv98.unitconverter.ui.base.BaseActivity;
+import vn.com.toandv98.unitconverter.ui.unitsearch.UnitSearchFragment;
 import vn.com.toandv98.unitconverter.utils.StateUtils;
 
 import static vn.com.toandv98.unitconverter.utils.Constrants.ACTION_UPDATE_RATES;
-import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_ID;
+import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_CONVERSION_ID;
 import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_RESULT_MSG;
+import static vn.com.toandv98.unitconverter.utils.Constrants.FRAG_UNIT_SEARCH_NAME;
 import static vn.com.toandv98.unitconverter.utils.Constrants.INPUT_UNIT;
 import static vn.com.toandv98.unitconverter.utils.Constrants.RESULT_UNIT;
 
@@ -41,7 +44,7 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
 
     private Toolbar toolbar;
     private ActionBar actionBar;
-    private FloatingActionButton fabSwap;
+    private FloatingActionButton fabSwap, fabInputUnit, fabResultUnit;
     private EditText edtInputValue, edtResultValue;
     private TextView tvInputUnit, tvResultUnit;
     private RecyclerView rvFromUnit, rvToUnit;
@@ -68,6 +71,8 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
         rvFromUnit = findViewById(R.id.rv_unit_from);
         rvToUnit = findViewById(R.id.rv_unit_to);
         fabSwap = findViewById(R.id.fab_converters_swap);
+        fabInputUnit = findViewById(R.id.fab_converters_input_unit);
+        fabResultUnit = findViewById(R.id.fab_converters_result_unit);
     }
 
     @Override
@@ -78,13 +83,15 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        presenter.onReceivedConversionId(getIntent().getIntExtra(EXTRA_NAME_ID, 0));
+        presenter.onReceivedConversionId(getIntent().getIntExtra(EXTRA_NAME_CONVERSION_ID, 0));
     }
 
     @Override
     protected void initListener() {
 
         fabSwap.setOnClickListener(v -> presenter.onSwapButtonClick());
+        fabInputUnit.setOnClickListener(v -> presenter.onFabInputUnitClick());
+        fabResultUnit.setOnClickListener(v -> presenter.onFabResultUnitClick());
 
         edtInputValue.addTextChangedListener(new TextWatcher() {
             @Override
@@ -195,6 +202,18 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
     @Override
     public void updateResultValue(String result) {
         edtResultValue.setText(result);
+    }
+
+    @Override
+    public void navigateToUnitSearch(int typeUnit) {
+        Fragment fragment = UnitSearchFragment.newInstance(
+                getIntent().getIntExtra(EXTRA_NAME_CONVERSION_ID, 0), typeUnit);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fl_search_unit, fragment)
+                .addToBackStack(FRAG_UNIT_SEARCH_NAME)
+                .commit();
     }
 
     private BroadcastReceiver localReceiver = new BroadcastReceiver() {

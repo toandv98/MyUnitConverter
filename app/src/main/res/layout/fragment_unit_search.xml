@@ -6,16 +6,16 @@
     android:background="@drawable/bg_with_header"
     android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_unit_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_10dp"
-        android:layout_marginTop="@dimen/margin_10dp"
-        android:layout_marginEnd="@dimen/margin_10dp"
-        app:cardCornerRadius="@dimen/card_radius_5dp">
+        android:layout_margin="@dimen/margin_5dp"
+        android:background="@drawable/bg_rounded"
+        app:contentInsetStartWithNavigation="0dp">
 
         <SearchView
-            android:id="@+id/sv_conversion"
+            android:id="@+id/sv_unit_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:iconifiedByDefault="false"
@@ -24,11 +24,11 @@
             android:queryBackground="@null"
             android:queryHint="@string/search_hint" />
 
-    </androidx.cardview.widget.CardView>
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_conversion"
+        android:id="@+id/rv_unit_search"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/margin_5dp" />
+        android:layout_height="match_parent" />
+
 </LinearLayout>

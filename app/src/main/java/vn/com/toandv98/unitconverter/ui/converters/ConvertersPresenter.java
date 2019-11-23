@@ -63,6 +63,16 @@ public class ConvertersPresenter extends BasePresenter<ConvertersContract.View, 
     }
 
     @Override
+    public void onFabInputUnitClick() {
+        view.navigateToUnitSearch(INPUT_UNIT);
+    }
+
+    @Override
+    public void onFabResultUnitClick() {
+        view.navigateToUnitSearch(RESULT_UNIT);
+    }
+
+    @Override
     public void onUnitItemClick(int typeUnit, Unit unit) {
         switch (typeUnit) {
             case INPUT_UNIT:

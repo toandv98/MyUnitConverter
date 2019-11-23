@@ -6,13 +6,16 @@ public final class Constrants {
     public static final String MAP_QUERY_KEY = "access_key";
     public static final String FIXED_IO_API_KEY = "4d5ea680acced9486937ad055d448064";
 
-    public static final String EXTRA_NAME_ID = "id";
+    public static final String EXTRA_NAME_CONVERSION_ID = "id";
     public static final String EXTRA_NAME_RESULT_MSG = "result_msg";
+    public static final String EXTRA_NAME_TYPE_UNIT = "typeUnit";
     public static final String DEFAULT_INPUT = "0.0";
     public static final int INPUT_UNIT = 1;
     public static final int RESULT_UNIT = 2;
 
     public static final String ACTION_UPDATE_RATES = "receiverUpdateRates";
+
+    public static final String FRAG_UNIT_SEARCH_NAME = "UnitSearchFragment";
 
     //region conversion
     public static final int LENGTH = 1;

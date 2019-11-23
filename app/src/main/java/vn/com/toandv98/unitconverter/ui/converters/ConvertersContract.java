@@ -25,6 +25,8 @@ public interface ConvertersContract {
         void clearInputValue();
 
         void updateResultValue(String result);
+
+        void navigateToUnitSearch(int typeUnit);
     }
 
     interface Presenter extends IBasePresenter {
@@ -35,6 +37,10 @@ public interface ConvertersContract {
         void onSwapButtonClick();
 
         void onClearItemClick();
+
+        void onFabInputUnitClick();
+
+        void onFabResultUnitClick();
 
         void onUnitItemClick(int typeUnit, Unit unit);
 

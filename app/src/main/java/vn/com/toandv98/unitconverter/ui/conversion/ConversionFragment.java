@@ -14,7 +14,7 @@ import vn.com.toandv98.unitconverter.ui.base.BaseFragment;
 import vn.com.toandv98.unitconverter.ui.converters.ConvertersActivity;
 import vn.com.toandv98.unitconverter.utils.ConversionUtils;
 
-import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_ID;
+import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_CONVERSION_ID;
 
 public class ConversionFragment extends BaseFragment<ConversionContract.Presenter>
         implements ConversionContract.View, SearchView.OnQueryTextListener {
@@ -68,7 +68,7 @@ public class ConversionFragment extends BaseFragment<ConversionContract.Presente
     @Override
     public void navigateToConverters(int id) {
         Intent intent = new Intent(getBaseActivity(), ConvertersActivity.class);
-        intent.putExtra(EXTRA_NAME_ID, id);
+        intent.putExtra(EXTRA_NAME_CONVERSION_ID, id);
         startActivity(intent);
     }
 }
