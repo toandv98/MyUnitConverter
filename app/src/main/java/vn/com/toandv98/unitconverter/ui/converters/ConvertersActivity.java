@@ -206,8 +206,7 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
 
     @Override
     public void navigateToUnitSearch(int typeUnit) {
-        Fragment fragment = UnitSearchFragment.newInstance(
-                getIntent().getIntExtra(EXTRA_NAME_CONVERSION_ID, 0), typeUnit);
+        Fragment fragment = UnitSearchFragment.newInstance(typeUnit);
 
         getSupportFragmentManager()
                 .beginTransaction()

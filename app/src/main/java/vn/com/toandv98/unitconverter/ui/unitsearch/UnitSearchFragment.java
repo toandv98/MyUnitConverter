@@ -5,30 +5,33 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 import vn.com.toandv98.unitconverter.R;
 import vn.com.toandv98.unitconverter.data.DataManager;
+import vn.com.toandv98.unitconverter.data.entities.Unit;
 import vn.com.toandv98.unitconverter.ui.base.BaseFragment;
 
-import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_CONVERSION_ID;
 import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_TYPE_UNIT;
 
-public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presenter> implements UnitSearchContract.View, SearchView.OnQueryTextListener {
+public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presenter>
+        implements UnitSearchContract.View, SearchView.OnQueryTextListener {
 
     private Toolbar toolbar;
     private SearchView svUnit;
     private RecyclerView rvUnit;
 
-    public static UnitSearchFragment newInstance(int conversionId, int typeUnit) {
+    public static UnitSearchFragment newInstance(int typeUnit) {
         UnitSearchFragment unitSearchFragment = new UnitSearchFragment();
         Bundle args = new Bundle();
-        args.putInt(EXTRA_NAME_CONVERSION_ID, conversionId);
         args.putInt(EXTRA_NAME_TYPE_UNIT, typeUnit);
         unitSearchFragment.setArguments(args);
         return unitSearchFragment;
@@ -58,6 +61,11 @@ public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presente
         ActionBar actionBar = getBaseActivity().getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            presenter.onReceivedBundle(bundle.getInt(EXTRA_NAME_TYPE_UNIT));
         }
     }
 
@@ -91,5 +99,19 @@ public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presente
     public boolean onQueryTextChange(String newText) {
 
         return false;
+    }
+
+    @Override
+    public void focusInput() {
+        svUnit.requestFocus();
+    }
+
+    @Override
+    public void loadUnit(List<Unit> units) {
+        UnitSearchAdapter adapter = new UnitSearchAdapter(getBaseActivity(), presenter, units);
+        RecyclerView.LayoutManager layoutManager =
+                new LinearLayoutManager(getBaseActivity(), RecyclerView.VERTICAL, false);
+        rvUnit.setLayoutManager(layoutManager);
+        rvUnit.setAdapter(adapter);
     }
 }
