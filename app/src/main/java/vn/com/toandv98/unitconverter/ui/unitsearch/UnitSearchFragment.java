@@ -1,5 +1,6 @@
 package vn.com.toandv98.unitconverter.ui.unitsearch;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,7 +11,7 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -28,6 +29,12 @@ public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presente
     private Toolbar toolbar;
     private SearchView svUnit;
     private RecyclerView rvUnit;
+    private UnitSearchAdapter adapter;
+    private UnitSearchContract.OnFinishListener callback;
+
+    public void setOnFinishListener(UnitSearchContract.OnFinishListener callback) {
+        this.callback = callback;
+    }
 
     public static UnitSearchFragment newInstance(int typeUnit) {
         UnitSearchFragment unitSearchFragment = new UnitSearchFragment();
@@ -91,13 +98,13 @@ public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presente
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-
+        adapter.getFilter().filter(query);
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-
+        adapter.getFilter().filter(newText);
         return false;
     }
 
@@ -107,10 +114,19 @@ public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presente
     }
 
     @Override
+    public void finishFragment() {
+        getBaseActivity().onBackPressed();
+        callback.onFinished();
+    }
+
+    @Override
     public void loadUnit(List<Unit> units) {
-        UnitSearchAdapter adapter = new UnitSearchAdapter(getBaseActivity(), presenter, units);
-        RecyclerView.LayoutManager layoutManager =
-                new LinearLayoutManager(getBaseActivity(), RecyclerView.VERTICAL, false);
+        int spanCount = 2;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            spanCount = 3;
+        }
+        adapter = new UnitSearchAdapter(getBaseActivity(), presenter, units);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getBaseActivity(), spanCount);
         rvUnit.setLayoutManager(layoutManager);
         rvUnit.setAdapter(adapter);
     }

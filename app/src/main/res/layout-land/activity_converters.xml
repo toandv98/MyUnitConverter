@@ -78,6 +78,21 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar_converters"
             tools:ignore="Autofill" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_converters_input_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:backgroundTint="@color/bg_white"
+            app:elevation="0dp"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="@+id/edt_converters_input"
+            app:layout_constraintEnd_toEndOf="@+id/edt_converters_input"
+            app:layout_constraintTop_toTopOf="@+id/edt_converters_input"
+            app:srcCompat="@drawable/ic_arrow_drop_down_circle_deep_orange" />
+
         <EditText
             android:id="@+id/edt_converters_result"
             android:layout_width="0dp"
@@ -99,6 +114,21 @@
             app:layout_constraintStart_toEndOf="@+id/edt_converters_input"
             app:layout_constraintTop_toBottomOf="@+id/toolbar_converters"
             tools:ignore="Autofill,UnusedAttribute" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_converters_result_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:backgroundTint="@color/bg_white"
+            app:elevation="0dp"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="@+id/edt_converters_result"
+            app:layout_constraintEnd_toEndOf="@+id/edt_converters_result"
+            app:layout_constraintTop_toTopOf="@+id/edt_converters_result"
+            app:srcCompat="@drawable/ic_arrow_drop_down_circle_deep_orange" />
 
         <TextView
             android:id="@+id/tv_input_unit"

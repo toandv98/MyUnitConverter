@@ -10,6 +10,7 @@ public final class Constrants {
     public static final String EXTRA_NAME_RESULT_MSG = "result_msg";
     public static final String EXTRA_NAME_TYPE_UNIT = "typeUnit";
     public static final String DEFAULT_INPUT = "0.0";
+    public static final int DEFAULT_POSITION = 0;
     public static final int INPUT_UNIT = 1;
     public static final int RESULT_UNIT = 2;
 

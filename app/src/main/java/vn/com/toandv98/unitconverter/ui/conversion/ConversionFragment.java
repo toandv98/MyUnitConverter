@@ -1,6 +1,7 @@
 package vn.com.toandv98.unitconverter.ui.conversion;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
@@ -8,11 +9,13 @@ import android.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import vn.com.toandv98.unitconverter.R;
 import vn.com.toandv98.unitconverter.data.DataManager;
+import vn.com.toandv98.unitconverter.data.entities.ConversionItem;
 import vn.com.toandv98.unitconverter.ui.base.BaseFragment;
 import vn.com.toandv98.unitconverter.ui.converters.ConvertersActivity;
-import vn.com.toandv98.unitconverter.utils.ConversionUtils;
 
 import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_CONVERSION_ID;
 
@@ -41,11 +44,7 @@ public class ConversionFragment extends BaseFragment<ConversionContract.Presente
 
     @Override
     protected void setupView(Bundle savedInstanceState) {
-        adapter = new ConversionAdapter(getBaseActivity(), presenter,
-                ConversionUtils.getInstance().getConversionItems());
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getBaseActivity(), 2);
-        rvConversion.setLayoutManager(layoutManager);
-        rvConversion.setAdapter(adapter);
+        presenter.onSetupView();
     }
 
     @Override
@@ -70,5 +69,17 @@ public class ConversionFragment extends BaseFragment<ConversionContract.Presente
         Intent intent = new Intent(getBaseActivity(), ConvertersActivity.class);
         intent.putExtra(EXTRA_NAME_CONVERSION_ID, id);
         startActivity(intent);
+    }
+
+    @Override
+    public void loadRecyclerView(List<ConversionItem> items) {
+        int spanCount = 2;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            spanCount = 3;
+        }
+        adapter = new ConversionAdapter(getBaseActivity(), presenter, items);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getBaseActivity(), spanCount);
+        rvConversion.setLayoutManager(layoutManager);
+        rvConversion.setAdapter(adapter);
     }
 }

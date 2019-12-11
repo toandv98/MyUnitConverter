@@ -6,9 +6,13 @@ import vn.com.toandv98.unitconverter.ui.base.BasePresenter;
 public class ConversionPresenter extends BasePresenter<ConversionContract.View, IDataManager>
         implements ConversionContract.Presenter {
 
-
     public ConversionPresenter(ConversionContract.View view, IDataManager dataManager) {
         super(view, dataManager);
+    }
+
+    @Override
+    public void onSetupView() {
+        view.loadRecyclerView(dataManager.getConversions());
     }
 
     @Override

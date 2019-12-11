@@ -1,14 +1,26 @@
 package vn.com.toandv98.unitconverter.data.entities;
 
+import java.util.List;
+
 public class ConversionItem {
     private int id;
     private int imageRes;
     private int titleRes;
+    private List<Unit> units;
 
-    public ConversionItem(int id, int imageRes, int titleRes) {
+    public ConversionItem(int id, int imageRes, int titleRes, List<Unit> units) {
         this.id = id;
         this.imageRes = imageRes;
         this.titleRes = titleRes;
+        this.units = units;
+    }
+
+    public List<Unit> getUnits() {
+        return units;
+    }
+
+    public void setUnits(List<Unit> units) {
+        this.units = units;
     }
 
     public int getId() {

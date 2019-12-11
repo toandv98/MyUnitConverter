@@ -29,6 +29,7 @@ import static vn.com.toandv98.unitconverter.utils.Constrants.FIXED_IO_API_KEY;
 import static vn.com.toandv98.unitconverter.utils.Constrants.MAP_QUERY_KEY;
 
 public class UpdateCurrencyService extends JobIntentService {
+
     public static final int NOFTIFICATION_UPDATE_RATES_ID = 1003;
     public static final int CURRENCY_SERVICE_ID = 1001;
     public static final String CHANNEL_UPDATE_ID = "1002";
@@ -83,13 +84,14 @@ public class UpdateCurrencyService extends JobIntentService {
             @SuppressWarnings("NullableProblems")
             @Override
             public void onFailure(Call<LastRates> call, Throwable t) {
-                builder.setContentText(t.getMessage())
-                        .setProgress(100, 100, false)
+                builder.setContentText(getString(R.string.msg_error_update_rates) + t.getMessage())
+                        .setProgress(0, 0, false)
                         .setUsesChronometer(false);
                 managerCompat.notify(NOFTIFICATION_UPDATE_RATES_ID, builder.build());
 
                 Intent broadcastIntent = new Intent(ACTION_UPDATE_RATES);
-                broadcastIntent.putExtra(EXTRA_NAME_RESULT_MSG, t.getMessage());
+                broadcastIntent.putExtra(EXTRA_NAME_RESULT_MSG,
+                        getString(R.string.msg_error_update_rates) + t.getMessage());
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
             }
         });

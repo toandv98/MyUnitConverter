@@ -10,10 +10,18 @@ public interface UnitSearchContract {
     interface View extends IBaseView {
         void focusInput();
 
+        void finishFragment();
+
         void loadUnit(List<Unit> units);
     }
 
     interface Presenter extends IBasePresenter {
         void onReceivedBundle(int typeUnit);
+
+        void onItemSearchClick(Unit unit, int position);
+    }
+
+    interface OnFinishListener {
+        void onFinished();
     }
 }

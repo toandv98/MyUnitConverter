@@ -15,6 +15,9 @@ import java.util.List;
 import vn.com.toandv98.unitconverter.R;
 import vn.com.toandv98.unitconverter.data.entities.Unit;
 
+import static vn.com.toandv98.unitconverter.utils.Constrants.INPUT_UNIT;
+import static vn.com.toandv98.unitconverter.utils.Constrants.RESULT_UNIT;
+
 public class UnitsAdapter extends RecyclerView.Adapter<UnitsAdapter.UnitViewHolder> {
 
     private Context context;
@@ -31,8 +34,6 @@ public class UnitsAdapter extends RecyclerView.Adapter<UnitsAdapter.UnitViewHold
     }
 
     public void updateRadio(int position) {
-        presenter.onUnitItemClick(typeUnit, units.get(position));
-
         int copyOfLastCheckedPosition = lastCheckedPosition;
         lastCheckedPosition = position;
         notifyItemChanged(copyOfLastCheckedPosition);
@@ -81,7 +82,11 @@ public class UnitsAdapter extends RecyclerView.Adapter<UnitsAdapter.UnitViewHold
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            updateRadio(position);
+            if (typeUnit == INPUT_UNIT) {
+                presenter.onInputUnitSelect(position);
+            } else if (typeUnit == RESULT_UNIT) {
+                presenter.onResultUnitSelect(position);
+            }
         }
     }
 }

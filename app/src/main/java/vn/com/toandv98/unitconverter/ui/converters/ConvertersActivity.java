@@ -29,6 +29,7 @@ import vn.com.toandv98.unitconverter.R;
 import vn.com.toandv98.unitconverter.data.DataManager;
 import vn.com.toandv98.unitconverter.data.entities.Unit;
 import vn.com.toandv98.unitconverter.ui.base.BaseActivity;
+import vn.com.toandv98.unitconverter.ui.unitsearch.UnitSearchContract;
 import vn.com.toandv98.unitconverter.ui.unitsearch.UnitSearchFragment;
 import vn.com.toandv98.unitconverter.utils.StateUtils;
 
@@ -40,7 +41,7 @@ import static vn.com.toandv98.unitconverter.utils.Constrants.INPUT_UNIT;
 import static vn.com.toandv98.unitconverter.utils.Constrants.RESULT_UNIT;
 
 public class ConvertersActivity extends BaseActivity<ConvertersContract.Presenter>
-        implements ConvertersContract.View {
+        implements ConvertersContract.View, UnitSearchContract.OnFinishListener {
 
     private Toolbar toolbar;
     private ActionBar actionBar;
@@ -92,24 +93,7 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
         fabSwap.setOnClickListener(v -> presenter.onSwapButtonClick());
         fabInputUnit.setOnClickListener(v -> presenter.onFabInputUnitClick());
         fabResultUnit.setOnClickListener(v -> presenter.onFabResultUnitClick());
-
-        edtInputValue.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                presenter.onInputValueChanged(s);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
+        edtInputValue.addTextChangedListener(watcher);
     }
     //endregion
 
@@ -130,6 +114,14 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment fragment) {
+        super.onAttachFragment(fragment);
+        if (fragment instanceof UnitSearchFragment) {
+            ((UnitSearchFragment) fragment).setOnFinishListener(this);
         }
     }
 
@@ -179,6 +171,16 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
     }
 
     @Override
+    public void updateRadioInput(int position) {
+        adapterInputUnit.updateRadio(position);
+    }
+
+    @Override
+    public void updateRadioResult(int position) {
+        adapterResultUnit.updateRadio(position);
+    }
+
+    @Override
     public void loadUnit(List<Unit> units) {
         adapterInputUnit = new UnitsAdapter(this, presenter, units, INPUT_UNIT);
         adapterResultUnit = new UnitsAdapter(this, presenter, units, RESULT_UNIT);
@@ -223,4 +225,26 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
             }
         }
     };
+
+    private TextWatcher watcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            presenter.onInputValueChanged(s);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    @Override
+    public void onFinished() {
+        presenter.onFragmentSearchFinished();
+    }
 }

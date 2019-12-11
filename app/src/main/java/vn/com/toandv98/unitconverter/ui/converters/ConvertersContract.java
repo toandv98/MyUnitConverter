@@ -20,6 +20,10 @@ public interface ConvertersContract {
 
         void updateResultUnit(@StringRes int labelRes);
 
+        void updateRadioInput(int position);
+
+        void updateRadioResult(int position);
+
         void loadUnit(List<Unit> units);
 
         void clearInputValue();
@@ -42,8 +46,12 @@ public interface ConvertersContract {
 
         void onFabResultUnitClick();
 
-        void onUnitItemClick(int typeUnit, Unit unit);
+        void onInputUnitSelect(int position);
+
+        void onResultUnitSelect(int position);
 
         void onInputValueChanged(CharSequence s);
+
+        void onFragmentSearchFinished();
     }
 }
