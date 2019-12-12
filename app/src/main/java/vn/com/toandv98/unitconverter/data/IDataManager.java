@@ -1,20 +1,26 @@
 package vn.com.toandv98.unitconverter.data;
 
 import java.util.List;
-import java.util.Map;
 
-import vn.com.toandv98.unitconverter.data.entities.ConversionItem;
+import vn.com.toandv98.unitconverter.data.entities.Conversion;
 import vn.com.toandv98.unitconverter.data.entities.Unit;
+import vn.com.toandv98.unitconverter.data.entities.UnitRoom;
 
 public interface IDataManager {
 
+    interface RemoteCallBack {
+        void onSuccess(List<UnitRoom> unitRooms);
+
+        void onFailure(String msg);
+    }
+
     void updateFromRemote();
 
-    Map<String, Double> getLastRates();
+    void fetchLastRates(RemoteCallBack callBack);
 
-    List<Unit> getCurrencyUnits();
+    List<Conversion> getConversions();
 
-    List<ConversionItem> getConversions();
+    List<Unit> getUnitsByConversionId(int id);
 
-    ConversionItem getConversion(int id);
+    Conversion getConversionById(int id);
 }

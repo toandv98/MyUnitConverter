@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "conversion_item")
-public class ConversionItemRoom {
+public class ConversionRoom {
 
     @PrimaryKey
     private int id;
@@ -16,7 +16,7 @@ public class ConversionItemRoom {
     @ColumnInfo(name = "title_res_name")
     private String titleRes;
 
-    public ConversionItemRoom(int id, String imageRes, String titleRes) {
+    public ConversionRoom(int id, String imageRes, String titleRes) {
         this.id = id;
         this.imageRes = imageRes;
         this.titleRes = titleRes;

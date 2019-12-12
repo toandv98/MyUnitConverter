@@ -15,7 +15,8 @@ import static vn.com.toandv98.unitconverter.utils.Constrants.NEWTON;
 import static vn.com.toandv98.unitconverter.utils.Constrants.RANKINE;
 import static vn.com.toandv98.unitconverter.utils.Constrants.REAUMUR;
 import static vn.com.toandv98.unitconverter.utils.Constrants.ROMER;
-import static vn.com.toandv98.unitconverter.utils.Constrants.TEMPERATURE;
+import static vn.com.toandv98.unitconverter.utils.StateUtils.CURRENT_INPUT_UNIT;
+import static vn.com.toandv98.unitconverter.utils.StateUtils.CURRENT_RESULT_UNIT;
 
 public final class ConvertUtils {
 
@@ -23,19 +24,17 @@ public final class ConvertUtils {
     }
 
     public static String convert(double value) {
-
-        Unit from = StateUtils.getInputUnit();
-        Unit to = StateUtils.getResultUnit();
         double result = value;
-
-        if (StateUtils.getConversionId() == TEMPERATURE) {
-            result = convertTemperatureValue(value, from, to);
-        } else if (from.getId() != to.getId()) {
-            BigDecimal multiplier = new BigDecimal(from.getToBase()).multiply(new BigDecimal(to.getFromBase()));
+        if (CURRENT_INPUT_UNIT.getId() != CURRENT_RESULT_UNIT.getId()) {
+            BigDecimal multiplier = new BigDecimal(CURRENT_INPUT_UNIT.getToBase()).multiply(new BigDecimal(CURRENT_RESULT_UNIT.getFromBase()));
             BigDecimal bdResult = new BigDecimal(value).multiply(multiplier);
             result = bdResult.doubleValue();
         }
+        return getDecimalFormat().format(result);
+    }
 
+    public static String convertTemperature(double value) {
+        double result = convertTemperatureValue(value, CURRENT_INPUT_UNIT, CURRENT_RESULT_UNIT);
         return getDecimalFormat().format(result);
     }
 

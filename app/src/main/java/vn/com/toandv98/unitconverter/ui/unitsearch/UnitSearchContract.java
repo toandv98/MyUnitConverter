@@ -16,7 +16,7 @@ public interface UnitSearchContract {
     }
 
     interface Presenter extends IBasePresenter {
-        void onReceivedBundle(int typeUnit);
+        void onReceivedBundle(int unitType, int conversionId);
 
         void onItemSearchClick(Unit unit, int position);
     }

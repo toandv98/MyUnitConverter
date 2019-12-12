@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vn.com.toandv98.unitconverter.R;
-import vn.com.toandv98.unitconverter.data.entities.ConversionItem;
+import vn.com.toandv98.unitconverter.data.entities.Conversion;
 import vn.com.toandv98.unitconverter.utils.AppUtils;
 
 public class ConversionAdapter extends RecyclerView.Adapter<ConversionAdapter.ConversionViewHolder>
@@ -24,11 +24,11 @@ public class ConversionAdapter extends RecyclerView.Adapter<ConversionAdapter.Co
 
     private Context context;
     private ConversionContract.Presenter presenter;
-    private List<ConversionItem> data;
-    private List<ConversionItem> dataFilter;
+    private List<Conversion> data;
+    private List<Conversion> dataFilter;
 
     public ConversionAdapter(Context context, ConversionContract.Presenter presenter,
-                             List<ConversionItem> data) {
+                             List<Conversion> data) {
         this.context = context;
         this.presenter = presenter;
         this.data = data;
@@ -45,7 +45,7 @@ public class ConversionAdapter extends RecyclerView.Adapter<ConversionAdapter.Co
 
     @Override
     public void onBindViewHolder(@NonNull ConversionViewHolder holder, int position) {
-        ConversionItem item = dataFilter.get(position);
+        Conversion item = dataFilter.get(position);
         holder.tvTitle.setText(item.getTitleRes());
         holder.ivIcon.setImageDrawable(context.getDrawable(item.getImageRes()));
     }
@@ -65,8 +65,8 @@ public class ConversionAdapter extends RecyclerView.Adapter<ConversionAdapter.Co
                 if (str.isEmpty()) {
                     results.values = data;
                 } else {
-                    List<ConversionItem> items = new ArrayList<>();
-                    for (ConversionItem item : data) {
+                    List<Conversion> items = new ArrayList<>();
+                    for (Conversion item : data) {
                         if (AppUtils.removeAccent(context.getString(item.getTitleRes())).toLowerCase()
                                 .contains(AppUtils.removeAccent(str).toLowerCase())) {
                             items.add(item);
@@ -80,7 +80,7 @@ public class ConversionAdapter extends RecyclerView.Adapter<ConversionAdapter.Co
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                dataFilter = (List<ConversionItem>) results.values;
+                dataFilter = (List<Conversion>) results.values;
                 notifyDataSetChanged();
             }
         };

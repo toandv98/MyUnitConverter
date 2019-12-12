@@ -30,7 +30,7 @@ public interface ConvertersContract {
 
         void updateResultValue(String result);
 
-        void navigateToUnitSearch(int typeUnit);
+        void navigateToUnitSearch(int unitType, int conversionId);
     }
 
     interface Presenter extends IBasePresenter {

@@ -9,24 +9,33 @@ import androidx.annotation.StringRes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
-import vn.com.toandv98.unitconverter.data.entities.ConversionItem;
-import vn.com.toandv98.unitconverter.data.entities.ConversionItemRoom;
-import vn.com.toandv98.unitconverter.data.entities.ConversionWithUnit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import vn.com.toandv98.unitconverter.data.entities.Conversion;
+import vn.com.toandv98.unitconverter.data.entities.ConversionRoom;
+import vn.com.toandv98.unitconverter.data.entities.LastRates;
 import vn.com.toandv98.unitconverter.data.entities.Unit;
 import vn.com.toandv98.unitconverter.data.entities.UnitRoom;
 import vn.com.toandv98.unitconverter.data.local.ConversionDao;
 import vn.com.toandv98.unitconverter.data.local.ConversionDataBase;
-import vn.com.toandv98.unitconverter.data.local.PreferencesHelper;
+import vn.com.toandv98.unitconverter.data.remote.RetrofitClient;
 import vn.com.toandv98.unitconverter.services.UpdateCurrencyService;
+
+import static vn.com.toandv98.unitconverter.utils.Constrants.CURRENCY;
+import static vn.com.toandv98.unitconverter.utils.Constrants.FIXED_IO_API_KEY;
+import static vn.com.toandv98.unitconverter.utils.Constrants.MAP_QUERY_KEY;
 
 public class DataManager implements IDataManager {
 
     private Context context;
-    private static List<ConversionItem> CONVERSIONS = null;
+    private ConversionDao conversionDao;
 
     public DataManager(Context context) {
         this.context = context;
+        conversionDao = ConversionDataBase.getINSTANCE(context).conversionDao();
     }
 
     @Override
@@ -35,67 +44,64 @@ public class DataManager implements IDataManager {
     }
 
     @Override
-    public Map<String, Double> getLastRates() {
-        return PreferencesHelper.readFromSP(context);
-    }
+    public void fetchLastRates(RemoteCallBack callBack) {
+        Map<String, String> mapQuery = new TreeMap<>();
+        mapQuery.put(MAP_QUERY_KEY, FIXED_IO_API_KEY);
 
-    @Override
-    public List<Unit> getCurrencyUnits() {
-        List<Unit> results = new ArrayList<>();
-        int unitId = 1400;  // Unit id >= 1400
-        for (Map.Entry<String, Double> entry : getLastRates().entrySet()) {
-            Double value = entry.getValue();
-            String key = entry.getKey().toLowerCase();
-            Unit unit = new Unit(unitId++, toStringResId(key + "_"),
-                    toDrawableResId("ic_" + key), 1 / value, value);
-            results.add(unit);
-        }
-        return results;
-    }
+        RetrofitClient.getApiService().getLastRates(mapQuery).enqueue(new Callback<LastRates>() {
 
-    @Override
-    public List<ConversionItem> getConversions() {
-        if (CONVERSIONS == null) {
-            CONVERSIONS = getDataFromRoomDB();
-        }
-        return CONVERSIONS;
-    }
-
-    @Override
-    public ConversionItem getConversion(int id) {
-        if (CONVERSIONS == null) {
-            CONVERSIONS = getDataFromRoomDB();
-        }
-        for (ConversionItem item : CONVERSIONS) {
-            if (item.getId() == id) {
-                return item;
+            @SuppressWarnings("NullableProblems")
+            @Override
+            public void onResponse(Call<LastRates> call, Response<LastRates> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<UnitRoom> lastRates = new ArrayList<>();
+                    int unitId = 1400;
+                    for (Map.Entry<String, Double> entry : response.body().getRates().entrySet()) {
+                        Double value = entry.getValue();
+                        String key = entry.getKey().toLowerCase();
+                        UnitRoom unitR = new UnitRoom(unitId++, key + "_", "ic_" + key, 1 / value, value, CURRENCY);
+                        lastRates.add(unitR);
+                    }
+                    conversionDao.updateLocalRates(lastRates);
+                    callBack.onSuccess(lastRates);
+                }
             }
-        }
-        return null;
+
+            @SuppressWarnings("NullableProblems")
+            @Override
+            public void onFailure(Call<LastRates> call, Throwable t) {
+                callBack.onFailure(t.getMessage());
+            }
+        });
     }
 
-    private List<ConversionItem> getDataFromRoomDB() {
-        ConversionDao conversionDao = ConversionDataBase.getINSTANCE(context).conversionDao();
-        List<ConversionItem> results = new ArrayList<>();
-        List<ConversionWithUnit> conversionWithUnits = conversionDao.getConversionWithUnits();
-        ConversionItemRoom temp;
+    @Override
+    public List<Conversion> getConversions() {
+        List<Conversion> results = new ArrayList<>();
 
-        for (ConversionWithUnit item : conversionWithUnits) {
-            temp = item.itemLocal;
-            results.add(new ConversionItem(temp.getId(), toDrawableResId(temp.getImageRes()),
-                    toStringResId(temp.getTitleRes()), toUnit(item.unitRooms)));
+        for (ConversionRoom item : conversionDao.getConversions()) {
+            results.add(new Conversion(item.getId(),
+                    toDrawableResId(item.getImageRes()), toStringResId(item.getTitleRes())));
         }
 
         return results;
     }
 
-    private List<Unit> toUnit(List<UnitRoom> unitRooms) {
-        List<Unit> result = new ArrayList<>();
-        for (UnitRoom unitR : unitRooms) {
-            result.add(new Unit(unitR.getId(), toStringResId(unitR.getLabelRes()),
+    @Override
+    public List<Unit> getUnitsByConversionId(int id) {
+        List<Unit> results = new ArrayList<>();
+        for (UnitRoom unitR : conversionDao.getUnitsByConversionId(id)) {
+            results.add(new Unit(unitR.getId(), toStringResId(unitR.getLabelRes()),
                     toDrawableResId(unitR.getDrawableRes()), unitR.getToBase(), unitR.getFromBase()));
         }
-        return result;
+        return results;
+    }
+
+    @Override
+    public Conversion getConversionById(int id) {
+        ConversionRoom conversionR = conversionDao.getConversionById(id);
+        return new Conversion(conversionR.getId(),
+                toDrawableResId(conversionR.getImageRes()), toStringResId(conversionR.getTitleRes()));
     }
 
     @StringRes

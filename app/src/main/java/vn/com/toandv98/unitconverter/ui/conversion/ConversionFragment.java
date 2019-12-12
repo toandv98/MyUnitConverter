@@ -13,7 +13,7 @@ import java.util.List;
 
 import vn.com.toandv98.unitconverter.R;
 import vn.com.toandv98.unitconverter.data.DataManager;
-import vn.com.toandv98.unitconverter.data.entities.ConversionItem;
+import vn.com.toandv98.unitconverter.data.entities.Conversion;
 import vn.com.toandv98.unitconverter.ui.base.BaseFragment;
 import vn.com.toandv98.unitconverter.ui.converters.ConvertersActivity;
 
@@ -72,7 +72,7 @@ public class ConversionFragment extends BaseFragment<ConversionContract.Presente
     }
 
     @Override
-    public void loadRecyclerView(List<ConversionItem> items) {
+    public void loadRecyclerView(List<Conversion> items) {
         int spanCount = 2;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             spanCount = 3;

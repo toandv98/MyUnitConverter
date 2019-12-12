@@ -31,7 +31,6 @@ import vn.com.toandv98.unitconverter.data.entities.Unit;
 import vn.com.toandv98.unitconverter.ui.base.BaseActivity;
 import vn.com.toandv98.unitconverter.ui.unitsearch.UnitSearchContract;
 import vn.com.toandv98.unitconverter.ui.unitsearch.UnitSearchFragment;
-import vn.com.toandv98.unitconverter.utils.StateUtils;
 
 import static vn.com.toandv98.unitconverter.utils.Constrants.ACTION_UPDATE_RATES;
 import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_CONVERSION_ID;
@@ -39,6 +38,8 @@ import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_RESULT_M
 import static vn.com.toandv98.unitconverter.utils.Constrants.FRAG_UNIT_SEARCH_NAME;
 import static vn.com.toandv98.unitconverter.utils.Constrants.INPUT_UNIT;
 import static vn.com.toandv98.unitconverter.utils.Constrants.RESULT_UNIT;
+import static vn.com.toandv98.unitconverter.utils.StateUtils.CURRENT_INPUT_UNIT;
+import static vn.com.toandv98.unitconverter.utils.StateUtils.CURRENT_RESULT_UNIT;
 
 public class ConvertersActivity extends BaseActivity<ConvertersContract.Presenter>
         implements ConvertersContract.View, UnitSearchContract.OnFinishListener {
@@ -156,8 +157,8 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
         int lastPos = adapterInputUnit.getLastCheckedPosition();
         adapterInputUnit.updateRadio(adapterResultUnit.getLastCheckedPosition());
         adapterResultUnit.updateRadio(lastPos);
-        tvInputUnit.setText(StateUtils.getInputUnit().getLabelRes());
-        tvResultUnit.setText(StateUtils.getResultUnit().getLabelRes());
+        tvInputUnit.setText(CURRENT_INPUT_UNIT.getLabelRes());
+        tvResultUnit.setText(CURRENT_RESULT_UNIT.getLabelRes());
     }
 
     @Override
@@ -207,8 +208,8 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
     }
 
     @Override
-    public void navigateToUnitSearch(int typeUnit) {
-        Fragment fragment = UnitSearchFragment.newInstance(typeUnit);
+    public void navigateToUnitSearch(int unitType, int conversionId) {
+        Fragment fragment = UnitSearchFragment.newInstance(unitType, conversionId);
 
         getSupportFragmentManager()
                 .beginTransaction()

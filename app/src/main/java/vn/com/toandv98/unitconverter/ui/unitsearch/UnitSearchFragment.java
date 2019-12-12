@@ -21,6 +21,7 @@ import vn.com.toandv98.unitconverter.data.DataManager;
 import vn.com.toandv98.unitconverter.data.entities.Unit;
 import vn.com.toandv98.unitconverter.ui.base.BaseFragment;
 
+import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_CONVERSION_ID;
 import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_TYPE_UNIT;
 
 public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presenter>
@@ -36,10 +37,11 @@ public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presente
         this.callback = callback;
     }
 
-    public static UnitSearchFragment newInstance(int typeUnit) {
+    public static UnitSearchFragment newInstance(int typeUnit, int conversionId) {
         UnitSearchFragment unitSearchFragment = new UnitSearchFragment();
         Bundle args = new Bundle();
         args.putInt(EXTRA_NAME_TYPE_UNIT, typeUnit);
+        args.putInt(EXTRA_NAME_CONVERSION_ID, conversionId);
         unitSearchFragment.setArguments(args);
         return unitSearchFragment;
     }
@@ -72,7 +74,7 @@ public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presente
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            presenter.onReceivedBundle(bundle.getInt(EXTRA_NAME_TYPE_UNIT));
+            presenter.onReceivedBundle(bundle.getInt(EXTRA_NAME_TYPE_UNIT), bundle.getInt(EXTRA_NAME_CONVERSION_ID));
         }
     }
 

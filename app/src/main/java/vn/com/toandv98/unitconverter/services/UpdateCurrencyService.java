@@ -12,16 +12,14 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import vn.com.toandv98.unitconverter.R;
-import vn.com.toandv98.unitconverter.data.entities.LastRates;
-import vn.com.toandv98.unitconverter.data.local.PreferencesHelper;
-import vn.com.toandv98.unitconverter.data.remote.RetrofitClient;
+import vn.com.toandv98.unitconverter.data.DataManager;
+import vn.com.toandv98.unitconverter.data.IDataManager;
+import vn.com.toandv98.unitconverter.data.entities.UnitRoom;
 
 import static vn.com.toandv98.unitconverter.utils.Constrants.ACTION_UPDATE_RATES;
 import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_RESULT_MSG;
@@ -30,7 +28,7 @@ import static vn.com.toandv98.unitconverter.utils.Constrants.MAP_QUERY_KEY;
 
 public class UpdateCurrencyService extends JobIntentService {
 
-    public static final int NOFTIFICATION_UPDATE_RATES_ID = 1003;
+    public static final int NOTIFICATION_UPDATE_RATES_ID = 1003;
     public static final int CURRENCY_SERVICE_ID = 1001;
     public static final String CHANNEL_UPDATE_ID = "1002";
 
@@ -59,39 +57,36 @@ public class UpdateCurrencyService extends JobIntentService {
                 .setProgress(0, 0, true);
 
         final NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
-        startForeground(NOFTIFICATION_UPDATE_RATES_ID, builder.build());
+        startForeground(NOTIFICATION_UPDATE_RATES_ID, builder.build());
 
         Map<String, String> mapQuery = new TreeMap<>();
         mapQuery.put(MAP_QUERY_KEY, FIXED_IO_API_KEY);
+        DataManager dataManager = new DataManager(getApplicationContext());
 
-        RetrofitClient.getApiService().getLastRates(mapQuery).enqueue(new Callback<LastRates>() {
-            @SuppressWarnings("NullableProblems")
+        dataManager.fetchLastRates(new IDataManager.RemoteCallBack() {
             @Override
-            public void onResponse(Call<LastRates> call, Response<LastRates> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    PreferencesHelper.insertToSP(getApplicationContext(), response.body().getRates());
-                    builder.setContentText(getString(R.string.msg_update_data_successfully))
-                            .setProgress(0, 0, false)
-                            .setUsesChronometer(false);
-                    managerCompat.notify(NOFTIFICATION_UPDATE_RATES_ID, builder.build());
-
-                    Intent broadcastIntent = new Intent(ACTION_UPDATE_RATES);
-                    broadcastIntent.putExtra(EXTRA_NAME_RESULT_MSG, getString(R.string.msg_update_data_successfully));
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
-                }
-            }
-
-            @SuppressWarnings("NullableProblems")
-            @Override
-            public void onFailure(Call<LastRates> call, Throwable t) {
-                builder.setContentText(getString(R.string.msg_error_update_rates) + t.getMessage())
+            public void onSuccess(List<UnitRoom> unitRooms) {
+                builder.setContentText(getString(R.string.msg_update_data_successfully))
                         .setProgress(0, 0, false)
                         .setUsesChronometer(false);
-                managerCompat.notify(NOFTIFICATION_UPDATE_RATES_ID, builder.build());
+                managerCompat.notify(NOTIFICATION_UPDATE_RATES_ID, builder.build());
+
+                Intent broadcastIntent = new Intent(ACTION_UPDATE_RATES);
+                broadcastIntent.putExtra(EXTRA_NAME_RESULT_MSG, getString(R.string.msg_update_data_successfully));
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
+            }
+
+            @Override
+            public void onFailure(String msg) {
+                builder.setContentText(getString(R.string.msg_error_update_rates) + msg)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.msg_error_update_rates) + msg))
+                        .setProgress(0, 0, false)
+                        .setUsesChronometer(false);
+                managerCompat.notify(NOTIFICATION_UPDATE_RATES_ID, builder.build());
 
                 Intent broadcastIntent = new Intent(ACTION_UPDATE_RATES);
                 broadcastIntent.putExtra(EXTRA_NAME_RESULT_MSG,
-                        getString(R.string.msg_error_update_rates) + t.getMessage());
+                        getString(R.string.msg_error_update_rates) + msg);
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(broadcastIntent);
             }
         });

@@ -4,13 +4,6 @@ public class Unit {
     private int id, labelRes, drawableRes;
     private double toBase, fromBase;
 
-    public Unit(int id, int labelRes, double toBase, double fromBase) {
-        this.id = id;
-        this.labelRes = labelRes;
-        this.toBase = toBase;
-        this.fromBase = fromBase;
-    }
-
     public Unit(int id, int labelRes, int drawableRes, double toBase, double fromBase) {
         this.id = id;
         this.labelRes = labelRes;
