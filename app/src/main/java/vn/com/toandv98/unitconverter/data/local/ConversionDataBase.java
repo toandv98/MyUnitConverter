@@ -12,7 +12,7 @@ import vn.com.toandv98.unitconverter.data.entities.UnitRoom;
 @Database(entities = {ConversionRoom.class, UnitRoom.class}, exportSchema = false, version = 1)
 public abstract class ConversionDataBase extends RoomDatabase {
 
-    private static final String DB_NAME = "conversion_database";
+    private static final String DB_NAME = "conversion.db";
     private static ConversionDataBase INSTANCE = null;
 
     public abstract ConversionDao conversionDao();
