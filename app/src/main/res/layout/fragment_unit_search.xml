@@ -30,8 +30,7 @@
         android:id="@+id/rv_unit_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_white"
-        android:paddingStart="@dimen/padding_5dp"
-        android:paddingEnd="@dimen/padding_5dp" />
+        android:background="@drawable/bg_rounded_top"
+        android:padding="@dimen/padding_5dp" />
 
 </LinearLayout>

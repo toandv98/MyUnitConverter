@@ -13,15 +13,15 @@ import vn.com.toandv98.unitconverter.R;
 import vn.com.toandv98.unitconverter.data.DataManager;
 import vn.com.toandv98.unitconverter.ui.base.BaseActivity;
 import vn.com.toandv98.unitconverter.ui.conversion.ConversionFragment;
-import vn.com.toandv98.unitconverter.ui.custom.CustomFragment;
+import vn.com.toandv98.unitconverter.ui.customs.CustomFragment;
 import vn.com.toandv98.unitconverter.ui.setting.SettingFragment;
 import vn.com.toandv98.unitconverter.ui.tool.ToolsFragment;
 
 public class MainActivity extends BaseActivity<MainContract.Presenter>
         implements MainContract.View, BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private FragmentManager fragmentManager;
-    private BottomNavigationView navigationView;
+    private FragmentManager mFragmentManager;
+    private BottomNavigationView mNavigationView;
 
     @Override
     protected int getLayout() {
@@ -35,20 +35,20 @@ public class MainActivity extends BaseActivity<MainContract.Presenter>
 
     @Override
     protected void initView() {
-        navigationView = findViewById(R.id.bottom_navigation);
+        mNavigationView = findViewById(R.id.bottom_navigation);
     }
 
     @Override
     protected void setupView(Bundle savedInstanceState) {
-        fragmentManager = getSupportFragmentManager();
+        mFragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
-            fragmentManager.beginTransaction().add(R.id.fl_home, new ConversionFragment()).commit();
+            mFragmentManager.beginTransaction().add(R.id.fl_home, new ConversionFragment()).commit();
         }
     }
 
     @Override
     protected void initListener() {
-        navigationView.setOnNavigationItemSelectedListener(this);
+        mNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter>
                 break;
         }
         if (fragment != null) {
-            fragmentManager.beginTransaction().replace(R.id.fl_home, fragment).commit();
+            mFragmentManager.beginTransaction().replace(R.id.fl_home, fragment).commit();
             return true;
         }
         return false;

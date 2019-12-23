@@ -11,19 +11,19 @@ import vn.com.toandv98.unitconverter.data.entities.LastRates;
 import static vn.com.toandv98.unitconverter.utils.Constrants.API_URL;
 
 public class RetrofitClient {
-    private static Retrofit retrofit = null;
+    private static Retrofit sRetrofit = null;
 
     public static ApiService getApiService() {
         return RetrofitClient.getClient().create(ApiService.class);
     }
 
     private static Retrofit getClient() {
-        if (retrofit == null) {
-            retrofit = new Retrofit.Builder().baseUrl(API_URL)
+        if (sRetrofit == null) {
+            sRetrofit = new Retrofit.Builder().baseUrl(API_URL)
                     .addConverterFactory(createGsonConverter())
                     .build();
         }
-        return retrofit;
+        return sRetrofit;
     }
 
     private static Converter.Factory createGsonConverter() {

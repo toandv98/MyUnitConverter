@@ -1,4 +1,4 @@
-package vn.com.toandv98.unitconverter.ui;
+package vn.com.toandv98.unitconverter.ui.splash;
 
 import android.content.Intent;
 import android.os.Bundle;

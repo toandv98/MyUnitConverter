@@ -14,7 +14,7 @@ public interface ConvertersContract {
 
         void focusInput();
 
-        void swapConversion();
+        void swapConversion(@StringRes int inputLabelRes, @StringRes int resultLabelRes);
 
         void updateInputUnit(@StringRes int labelRes);
 
@@ -30,7 +30,7 @@ public interface ConvertersContract {
 
         void updateResultValue(String result);
 
-        void navigateToUnitSearch(int unitType, int conversionId);
+        void navigateToUnitSearch(int resultCode, int conversionId);
     }
 
     interface Presenter extends IBasePresenter {
@@ -52,6 +52,6 @@ public interface ConvertersContract {
 
         void onInputValueChanged(CharSequence s);
 
-        void onFragmentSearchFinished();
+        void onFragmentSearchFinished(int resultCode, int position);
     }
 }

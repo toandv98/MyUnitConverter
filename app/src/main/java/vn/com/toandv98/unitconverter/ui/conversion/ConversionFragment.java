@@ -22,9 +22,9 @@ import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_CONVERSI
 public class ConversionFragment extends BaseFragment<ConversionContract.Presenter>
         implements ConversionContract.View, SearchView.OnQueryTextListener {
 
-    private SearchView svConversion;
-    private RecyclerView rvConversion;
-    private ConversionAdapter adapter;
+    private SearchView mSvConversion;
+    private RecyclerView mRvConversion;
+    private ConversionAdapter mAdapter;
 
     @Override
     protected int getLayout() {
@@ -38,8 +38,8 @@ public class ConversionFragment extends BaseFragment<ConversionContract.Presente
 
     @Override
     protected void initView(View view) {
-        rvConversion = view.findViewById(R.id.rv_conversion);
-        svConversion = view.findViewById(R.id.sv_conversion);
+        mRvConversion = view.findViewById(R.id.rv_conversion);
+        mSvConversion = view.findViewById(R.id.sv_conversion);
     }
 
     @Override
@@ -49,18 +49,18 @@ public class ConversionFragment extends BaseFragment<ConversionContract.Presente
 
     @Override
     protected void initListener() {
-        svConversion.setOnQueryTextListener(this);
+        mSvConversion.setOnQueryTextListener(this);
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        adapter.getFilter().filter(query);
+        mAdapter.getFilter().filter(query);
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        adapter.getFilter().filter(newText);
+        mAdapter.getFilter().filter(newText);
         return false;
     }
 
@@ -77,9 +77,9 @@ public class ConversionFragment extends BaseFragment<ConversionContract.Presente
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             spanCount = 3;
         }
-        adapter = new ConversionAdapter(getBaseActivity(), presenter, items);
+        mAdapter = new ConversionAdapter(getBaseActivity(), presenter, items);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getBaseActivity(), spanCount);
-        rvConversion.setLayoutManager(layoutManager);
-        rvConversion.setAdapter(adapter);
+        mRvConversion.setLayoutManager(layoutManager);
+        mRvConversion.setAdapter(mAdapter);
     }
 }

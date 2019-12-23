@@ -23,14 +23,14 @@ public class UnitsAdapter extends RecyclerView.Adapter<UnitsAdapter.UnitViewHold
     private Context context;
     private ConvertersContract.Presenter presenter;
     private List<Unit> units;
-    private int typeUnit;
+    private int unitType;
     private int lastCheckedPosition = 0;
 
-    public UnitsAdapter(Context context, ConvertersContract.Presenter presenter, List<Unit> units, int typeUnit) {
+    public UnitsAdapter(Context context, ConvertersContract.Presenter presenter, List<Unit> units, int unitType) {
         this.context = context;
         this.presenter = presenter;
         this.units = units;
-        this.typeUnit = typeUnit;
+        this.unitType = unitType;
     }
 
     public void updateRadio(int position) {
@@ -61,7 +61,6 @@ public class UnitsAdapter extends RecyclerView.Adapter<UnitsAdapter.UnitViewHold
         Drawable drawable = context.getResources().getDrawable(unit.getDrawableRes());
         drawable.setBounds(0, 0, 70, 70);
         holder.radioButton.setCompoundDrawables(drawable, null, null, null);
-
     }
 
     @Override
@@ -82,9 +81,9 @@ public class UnitsAdapter extends RecyclerView.Adapter<UnitsAdapter.UnitViewHold
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            if (typeUnit == INPUT_UNIT) {
+            if (unitType == INPUT_UNIT) {
                 presenter.onInputUnitSelect(position);
-            } else if (typeUnit == RESULT_UNIT) {
+            } else if (unitType == RESULT_UNIT) {
                 presenter.onResultUnitSelect(position);
             }
         }

@@ -12,7 +12,7 @@ public abstract class BasePresenter<V extends IBaseView, D extends IDataManager>
     }
 
     @Override
-    public void onDestroy() {
+    public void onViewDetached() {
         view = null;
         dataManager = null;
     }

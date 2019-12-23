@@ -4,7 +4,7 @@
     <solid android:color="@color/bg_white" />
 
     <corners
-        android:topLeftRadius="@dimen/card_radius_20dp"
-        android:topRightRadius="@dimen/card_radius_20dp" />
+        android:topLeftRadius="@dimen/card_radius_10dp"
+        android:topRightRadius="@dimen/card_radius_10dp" />
 
 </shape>

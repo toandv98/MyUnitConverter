@@ -16,18 +16,18 @@ import androidx.fragment.app.Fragment;
 public abstract class BaseFragment<P extends IBasePresenter> extends Fragment implements IBaseView {
 
     protected P presenter;
-    private BaseActivity activity;
+    private BaseActivity mActivity;
 
     @Override
     public final void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof Activity) {
-            activity = (BaseActivity) context;
+            mActivity = (BaseActivity) context;
         }
     }
 
     protected BaseActivity getBaseActivity() {
-        return activity;
+        return mActivity;
     }
 
     @Nullable
@@ -67,13 +67,13 @@ public abstract class BaseFragment<P extends IBasePresenter> extends Fragment im
 
     @Override
     public void onDestroy() {
-        presenter.onDestroy();
+        presenter.onViewDetached();
         super.onDestroy();
     }
 
     @Override
     public final void onDetach() {
-        activity = null;
+        mActivity = null;
         super.onDetach();
     }
 

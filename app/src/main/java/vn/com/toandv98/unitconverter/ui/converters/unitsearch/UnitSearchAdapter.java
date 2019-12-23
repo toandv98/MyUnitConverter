@@ -1,4 +1,4 @@
-package vn.com.toandv98.unitconverter.ui.unitsearch;
+package vn.com.toandv98.unitconverter.ui.converters.unitsearch;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -22,32 +22,32 @@ import vn.com.toandv98.unitconverter.utils.AppUtils;
 public class UnitSearchAdapter extends RecyclerView.Adapter<UnitSearchAdapter.UnitSearchViewHolder>
         implements Filterable {
 
-    private Context context;
-    private UnitSearchContract.Presenter presenter;
-    private List<Unit> units;
-    private List<Unit> filters;
+    private Context mContext;
+    private UnitSearchContract.Presenter mPresenter;
+    private List<Unit> mUnits;
+    private List<Unit> mFilters;
 
-    public UnitSearchAdapter(Context context, UnitSearchContract.Presenter presenter, List<Unit> units) {
-        this.context = context;
-        this.presenter = presenter;
-        this.units = units;
-        this.filters = units;
+    public UnitSearchAdapter(Context mContext, UnitSearchContract.Presenter mPresenter, List<Unit> mUnits) {
+        this.mContext = mContext;
+        this.mPresenter = mPresenter;
+        this.mUnits = mUnits;
+        this.mFilters = mUnits;
     }
 
     @NonNull
     @Override
     public UnitSearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View view = layoutInflater.inflate(R.layout.item_search_unit, parent, false);
         return new UnitSearchViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull UnitSearchViewHolder holder, int position) {
-        Unit unit = filters.get(position);
+        Unit unit = mFilters.get(position);
         holder.btnItem.setText(unit.getLabelRes());
 
-        Drawable drawable = context.getResources().getDrawable(unit.getDrawableRes());
+        Drawable drawable = mContext.getResources().getDrawable(unit.getDrawableRes());
         drawable.setBounds(0, 0, 90, 90);
         holder.btnItem.setCompoundDrawables(drawable, null, null, null);
 
@@ -55,7 +55,7 @@ public class UnitSearchAdapter extends RecyclerView.Adapter<UnitSearchAdapter.Un
 
     @Override
     public int getItemCount() {
-        return filters == null ? 0 : filters.size();
+        return mFilters == null ? 0 : mFilters.size();
     }
 
     @Override
@@ -66,11 +66,11 @@ public class UnitSearchAdapter extends RecyclerView.Adapter<UnitSearchAdapter.Un
                 String str = constraint.toString();
                 FilterResults results = new FilterResults();
                 if (str.isEmpty()) {
-                    results.values = units;
+                    results.values = mUnits;
                 } else {
                     List<Unit> items = new ArrayList<>();
-                    for (Unit item : units) {
-                        if (AppUtils.removeAccent(context.getString(item.getLabelRes())).toLowerCase()
+                    for (Unit item : mUnits) {
+                        if (AppUtils.removeAccent(mContext.getString(item.getLabelRes())).toLowerCase()
                                 .contains(AppUtils.removeAccent(str).toLowerCase())) {
                             items.add(item);
                         }
@@ -83,7 +83,7 @@ public class UnitSearchAdapter extends RecyclerView.Adapter<UnitSearchAdapter.Un
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                filters = (List<Unit>) results.values;
+                mFilters = (List<Unit>) results.values;
                 notifyDataSetChanged();
             }
         };
@@ -101,9 +101,9 @@ public class UnitSearchAdapter extends RecyclerView.Adapter<UnitSearchAdapter.Un
 
         @Override
         public void onClick(View v) {
-            Unit unit = filters.get(getAdapterPosition());
-            int position = units.lastIndexOf(unit);
-            presenter.onItemSearchClick(unit, position);
+            Unit unit = mFilters.get(getAdapterPosition());
+            int position = mUnits.lastIndexOf(unit);
+            mPresenter.onItemSearchClick(unit, position);
         }
     }
 }

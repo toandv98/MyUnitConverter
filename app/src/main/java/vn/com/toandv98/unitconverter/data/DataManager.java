@@ -16,6 +16,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import vn.com.toandv98.unitconverter.data.entities.Conversion;
 import vn.com.toandv98.unitconverter.data.entities.ConversionRoom;
+import vn.com.toandv98.unitconverter.data.entities.CustomConversion;
+import vn.com.toandv98.unitconverter.data.entities.CustomUnit;
 import vn.com.toandv98.unitconverter.data.entities.LastRates;
 import vn.com.toandv98.unitconverter.data.entities.Unit;
 import vn.com.toandv98.unitconverter.data.entities.UnitRoom;
@@ -30,17 +32,17 @@ import static vn.com.toandv98.unitconverter.utils.Constrants.MAP_QUERY_KEY;
 
 public class DataManager implements IDataManager {
 
-    private Context context;
-    private ConversionDao conversionDao;
+    private Context mContext;
+    private ConversionDao mConversionDao;
 
-    public DataManager(Context context) {
-        this.context = context;
-        conversionDao = ConversionDataBase.getINSTANCE(context).conversionDao();
+    public DataManager(Context mContext) {
+        this.mContext = mContext;
+        mConversionDao = ConversionDataBase.getINSTANCE(mContext).conversionDao();
     }
 
     @Override
     public void updateFromRemote() {
-        UpdateCurrencyService.enqueueWork(context, new Intent());
+        UpdateCurrencyService.enqueueWork(mContext, new Intent());
     }
 
     @Override
@@ -62,7 +64,7 @@ public class DataManager implements IDataManager {
                         UnitRoom unitR = new UnitRoom(unitId++, key + "_", "ic_" + key, 1 / value, value, CURRENCY);
                         lastRates.add(unitR);
                     }
-                    conversionDao.updateLocalRates(lastRates);
+                    mConversionDao.updateLocalRates(lastRates);
                     callBack.onSuccess(lastRates);
                 }
             }
@@ -79,7 +81,7 @@ public class DataManager implements IDataManager {
     public List<Conversion> getConversions() {
         List<Conversion> results = new ArrayList<>();
 
-        for (ConversionRoom item : conversionDao.getConversions()) {
+        for (ConversionRoom item : mConversionDao.getConversions()) {
             results.add(new Conversion(item.getId(),
                     toDrawableResId(item.getImageRes()), toStringResId(item.getTitleRes())));
         }
@@ -88,9 +90,14 @@ public class DataManager implements IDataManager {
     }
 
     @Override
+    public List<CustomConversion> getCustomConversions() {
+        return mConversionDao.getConversionCustoms();
+    }
+
+    @Override
     public List<Unit> getUnitsByConversionId(int id) {
         List<Unit> results = new ArrayList<>();
-        for (UnitRoom unitR : conversionDao.getUnitsByConversionId(id)) {
+        for (UnitRoom unitR : mConversionDao.getUnitsByConversionId(id)) {
             results.add(new Unit(unitR.getId(), toStringResId(unitR.getLabelRes()),
                     toDrawableResId(unitR.getDrawableRes()), unitR.getToBase(), unitR.getFromBase()));
         }
@@ -98,19 +105,40 @@ public class DataManager implements IDataManager {
     }
 
     @Override
+    public List<CustomUnit> getUnitCustomsByConversionId(int id) {
+        return mConversionDao.getUnitCustomsByConversionId(id);
+    }
+
+    @Override
     public Conversion getConversionById(int id) {
-        ConversionRoom conversionR = conversionDao.getConversionById(id);
+        ConversionRoom conversionR = mConversionDao.getConversionById(id);
         return new Conversion(conversionR.getId(),
                 toDrawableResId(conversionR.getImageRes()), toStringResId(conversionR.getTitleRes()));
     }
 
+    @Override
+    public void insertConversionWithUnits(CustomConversion custom, List<CustomUnit> customUnits) {
+        mConversionDao.insertConversionWithUnits(custom, customUnits);
+    }
+
+    @Override
+    public void updateHistory(int id) {
+        mConversionDao.updateHistory(id);
+    }
+
+    @Override
+    public void deleteConversions(CustomConversion custom) {
+        mConversionDao.deleteConversions(custom);
+    }
+
+
     @StringRes
     private int toStringResId(String name) {
-        return context.getResources().getIdentifier(name, "string", context.getPackageName());
+        return mContext.getResources().getIdentifier(name, "string", mContext.getPackageName());
     }
 
     @DrawableRes
     private int toDrawableResId(String name) {
-        return context.getResources().getIdentifier(name, "drawable", context.getPackageName());
+        return mContext.getResources().getIdentifier(name, "drawable", mContext.getPackageName());
     }
 }

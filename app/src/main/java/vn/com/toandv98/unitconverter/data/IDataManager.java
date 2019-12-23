@@ -3,6 +3,8 @@ package vn.com.toandv98.unitconverter.data;
 import java.util.List;
 
 import vn.com.toandv98.unitconverter.data.entities.Conversion;
+import vn.com.toandv98.unitconverter.data.entities.CustomConversion;
+import vn.com.toandv98.unitconverter.data.entities.CustomUnit;
 import vn.com.toandv98.unitconverter.data.entities.Unit;
 import vn.com.toandv98.unitconverter.data.entities.UnitRoom;
 
@@ -20,7 +22,17 @@ public interface IDataManager {
 
     List<Conversion> getConversions();
 
+    List<CustomConversion> getCustomConversions();
+
     List<Unit> getUnitsByConversionId(int id);
 
+    List<CustomUnit> getUnitCustomsByConversionId(int id);
+
     Conversion getConversionById(int id);
+
+    void insertConversionWithUnits(CustomConversion custom, List<CustomUnit> customUnits);
+
+    void updateHistory(int id);
+
+    void deleteConversions(CustomConversion custom);
 }

@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -29,8 +30,8 @@ import vn.com.toandv98.unitconverter.R;
 import vn.com.toandv98.unitconverter.data.DataManager;
 import vn.com.toandv98.unitconverter.data.entities.Unit;
 import vn.com.toandv98.unitconverter.ui.base.BaseActivity;
-import vn.com.toandv98.unitconverter.ui.unitsearch.UnitSearchContract;
-import vn.com.toandv98.unitconverter.ui.unitsearch.UnitSearchFragment;
+import vn.com.toandv98.unitconverter.ui.converters.unitsearch.UnitSearchContract;
+import vn.com.toandv98.unitconverter.ui.converters.unitsearch.UnitSearchFragment;
 
 import static vn.com.toandv98.unitconverter.utils.Constrants.ACTION_UPDATE_RATES;
 import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_CONVERSION_ID;
@@ -38,19 +39,19 @@ import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_RESULT_M
 import static vn.com.toandv98.unitconverter.utils.Constrants.FRAG_UNIT_SEARCH_NAME;
 import static vn.com.toandv98.unitconverter.utils.Constrants.INPUT_UNIT;
 import static vn.com.toandv98.unitconverter.utils.Constrants.RESULT_UNIT;
-import static vn.com.toandv98.unitconverter.utils.StateUtils.CURRENT_INPUT_UNIT;
-import static vn.com.toandv98.unitconverter.utils.StateUtils.CURRENT_RESULT_UNIT;
 
 public class ConvertersActivity extends BaseActivity<ConvertersContract.Presenter>
         implements ConvertersContract.View, UnitSearchContract.OnFinishListener {
 
-    private Toolbar toolbar;
-    private ActionBar actionBar;
-    private FloatingActionButton fabSwap, fabInputUnit, fabResultUnit;
-    private EditText edtInputValue, edtResultValue;
-    private TextView tvInputUnit, tvResultUnit;
-    private RecyclerView rvFromUnit, rvToUnit;
-    private UnitsAdapter adapterInputUnit, adapterResultUnit;
+    private Toolbar mToolbar;
+    private ActionBar mActionBar;
+    private FloatingActionButton mFabSwap, mFabInputUnit, mFabResultUnit;
+    private EditText mEdtInputValue, mEdtResultValue;
+    private TextView mTvInputUnit, mTvResultUnit;
+    private RecyclerView mRvFromUnit, mRvToUnit;
+    private UnitsAdapter mAdapterFrom, mAdapterTo;
+
+    public static final String TAG = "aaa";
 
     //region onCreate()
     @Override
@@ -65,25 +66,25 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
 
     @Override
     protected void initView() {
-        toolbar = findViewById(R.id.toolbar_converters);
-        edtInputValue = findViewById(R.id.edt_converters_input);
-        edtResultValue = findViewById(R.id.edt_converters_result);
-        tvInputUnit = findViewById(R.id.tv_input_unit);
-        tvResultUnit = findViewById(R.id.tv_result_unit);
-        rvFromUnit = findViewById(R.id.rv_unit_from);
-        rvToUnit = findViewById(R.id.rv_unit_to);
-        fabSwap = findViewById(R.id.fab_converters_swap);
-        fabInputUnit = findViewById(R.id.fab_converters_input_unit);
-        fabResultUnit = findViewById(R.id.fab_converters_result_unit);
+        mToolbar = findViewById(R.id.toolbar_converters);
+        mEdtInputValue = findViewById(R.id.edt_converters_input);
+        mEdtResultValue = findViewById(R.id.edt_converters_result);
+        mTvInputUnit = findViewById(R.id.tv_input_unit);
+        mTvResultUnit = findViewById(R.id.tv_result_unit);
+        mRvFromUnit = findViewById(R.id.rv_unit_from);
+        mRvToUnit = findViewById(R.id.rv_unit_to);
+        mFabSwap = findViewById(R.id.fab_converters_swap);
+        mFabInputUnit = findViewById(R.id.fab_converters_input_unit);
+        mFabResultUnit = findViewById(R.id.fab_converters_result_unit);
     }
 
     @Override
     protected void setupView(Bundle savedInstanceState) {
-        edtResultValue.setSaveEnabled(false);
-        setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
+        mEdtResultValue.setSaveEnabled(false);
+        setSupportActionBar(mToolbar);
+        mActionBar = getSupportActionBar();
+        if (mActionBar != null) {
+            mActionBar.setDisplayHomeAsUpEnabled(true);
         }
         presenter.onReceivedConversionId(getIntent().getIntExtra(EXTRA_NAME_CONVERSION_ID, 0));
     }
@@ -91,10 +92,10 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
     @Override
     protected void initListener() {
 
-        fabSwap.setOnClickListener(v -> presenter.onSwapButtonClick());
-        fabInputUnit.setOnClickListener(v -> presenter.onFabInputUnitClick());
-        fabResultUnit.setOnClickListener(v -> presenter.onFabResultUnitClick());
-        edtInputValue.addTextChangedListener(watcher);
+        mFabSwap.setOnClickListener(v -> presenter.onSwapButtonClick());
+        mFabInputUnit.setOnClickListener(v -> presenter.onFabInputUnitClick());
+        mFabResultUnit.setOnClickListener(v -> presenter.onFabResultUnitClick());
+        mEdtInputValue.addTextChangedListener(watcher);
     }
     //endregion
 
@@ -128,6 +129,7 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
 
     @Override
     protected void onResume() {
+        Log.d(TAG, "onResume: ");
         super.onResume();
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(localReceiver, new IntentFilter(ACTION_UPDATE_RATES));
@@ -135,6 +137,7 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
 
     @Override
     protected void onPause() {
+        Log.d(TAG, "onPause: ");
         LocalBroadcastManager.getInstance(this)
                 .unregisterReceiver(localReceiver);
         super.onPause();
@@ -142,74 +145,74 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
 
     @Override
     public void setTitle(int resId) {
-        if (actionBar != null) {
-            actionBar.setTitle(resId);
+        if (mActionBar != null) {
+            mActionBar.setTitle(resId);
         }
     }
 
     @Override
     public void focusInput() {
-        edtInputValue.requestFocus();
+        mEdtInputValue.requestFocus();
     }
 
     @Override
-    public void swapConversion() {
-        int lastPos = adapterInputUnit.getLastCheckedPosition();
-        adapterInputUnit.updateRadio(adapterResultUnit.getLastCheckedPosition());
-        adapterResultUnit.updateRadio(lastPos);
-        tvInputUnit.setText(CURRENT_INPUT_UNIT.getLabelRes());
-        tvResultUnit.setText(CURRENT_RESULT_UNIT.getLabelRes());
+    public void swapConversion(int inputLabelRes, int resultLabelRes) {
+        int lastPos = mAdapterFrom.getLastCheckedPosition();
+        mAdapterFrom.updateRadio(mAdapterTo.getLastCheckedPosition());
+        mAdapterTo.updateRadio(lastPos);
+        mTvInputUnit.setText(inputLabelRes);
+        mTvResultUnit.setText(resultLabelRes);
     }
 
     @Override
     public void updateInputUnit(int labelRes) {
-        tvInputUnit.setText(labelRes);
+        mTvInputUnit.setText(labelRes);
     }
 
     @Override
     public void updateResultUnit(int labelRes) {
-        tvResultUnit.setText(labelRes);
+        mTvResultUnit.setText(labelRes);
     }
 
     @Override
     public void updateRadioInput(int position) {
-        adapterInputUnit.updateRadio(position);
+        mAdapterFrom.updateRadio(position);
     }
 
     @Override
     public void updateRadioResult(int position) {
-        adapterResultUnit.updateRadio(position);
+        mAdapterTo.updateRadio(position);
     }
 
     @Override
     public void loadUnit(List<Unit> units) {
-        adapterInputUnit = new UnitsAdapter(this, presenter, units, INPUT_UNIT);
-        adapterResultUnit = new UnitsAdapter(this, presenter, units, RESULT_UNIT);
+        mAdapterFrom = new UnitsAdapter(this, presenter, units, INPUT_UNIT);
+        mAdapterTo = new UnitsAdapter(this, presenter, units, RESULT_UNIT);
 
         RecyclerView.LayoutManager layoutInputUnit, layoutResultUnit;
         layoutInputUnit = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         layoutResultUnit = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
 
-        rvFromUnit.setLayoutManager(layoutInputUnit);
-        rvFromUnit.setAdapter(adapterInputUnit);
+        mRvFromUnit.setLayoutManager(layoutInputUnit);
+        mRvFromUnit.setAdapter(mAdapterFrom);
 
-        rvToUnit.setLayoutManager(layoutResultUnit);
-        rvToUnit.setAdapter(adapterResultUnit);
+        mRvToUnit.setLayoutManager(layoutResultUnit);
+        mRvToUnit.setAdapter(mAdapterTo);
     }
 
     @Override
     public void clearInputValue() {
-        edtInputValue.getText().clear();
+        mEdtInputValue.getText().clear();
     }
 
     @Override
     public void updateResultValue(String result) {
-        edtResultValue.setText(result);
+        mEdtResultValue.setText(result);
     }
 
     @Override
-    public void navigateToUnitSearch(int unitType, int conversionId) {
-        Fragment fragment = UnitSearchFragment.newInstance(unitType, conversionId);
+    public void navigateToUnitSearch(int resultCode, int conversionId) {
+        Fragment fragment = UnitSearchFragment.newInstance(resultCode, conversionId);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -245,7 +248,7 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
     };
 
     @Override
-    public void onFinished() {
-        presenter.onFragmentSearchFinished();
+    public void onFinished(int resultCode, int position) {
+        presenter.onFragmentSearchFinished(resultCode, position);
     }
 }

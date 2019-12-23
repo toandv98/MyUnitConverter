@@ -7,9 +7,12 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import vn.com.toandv98.unitconverter.data.entities.ConversionRoom;
+import vn.com.toandv98.unitconverter.data.entities.CustomConversion;
+import vn.com.toandv98.unitconverter.data.entities.CustomUnit;
 import vn.com.toandv98.unitconverter.data.entities.UnitRoom;
 
-@Database(entities = {ConversionRoom.class, UnitRoom.class}, exportSchema = false, version = 1)
+@Database(entities = {ConversionRoom.class, UnitRoom.class, CustomConversion.class, CustomUnit.class},
+        exportSchema = false, version = 1)
 public abstract class ConversionDataBase extends RoomDatabase {
 
     private static final String DB_NAME = "conversion.db";

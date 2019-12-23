@@ -6,7 +6,6 @@ import vn.com.toandv98.unitconverter.data.IDataManager;
 import vn.com.toandv98.unitconverter.data.entities.Unit;
 import vn.com.toandv98.unitconverter.ui.base.BasePresenter;
 import vn.com.toandv98.unitconverter.utils.ConvertUtils;
-import vn.com.toandv98.unitconverter.utils.StateUtils;
 
 import static vn.com.toandv98.unitconverter.utils.Constrants.CURRENCY;
 import static vn.com.toandv98.unitconverter.utils.Constrants.DEFAULT_INPUT;
@@ -14,16 +13,14 @@ import static vn.com.toandv98.unitconverter.utils.Constrants.DEFAULT_POSITION;
 import static vn.com.toandv98.unitconverter.utils.Constrants.INPUT_UNIT;
 import static vn.com.toandv98.unitconverter.utils.Constrants.RESULT_UNIT;
 import static vn.com.toandv98.unitconverter.utils.Constrants.TEMPERATURE;
-import static vn.com.toandv98.unitconverter.utils.StateUtils.CURRENT_INPUT;
-import static vn.com.toandv98.unitconverter.utils.StateUtils.CURRENT_INPUT_POSITION;
-import static vn.com.toandv98.unitconverter.utils.StateUtils.CURRENT_INPUT_UNIT;
-import static vn.com.toandv98.unitconverter.utils.StateUtils.CURRENT_RESULT_POSITION;
-import static vn.com.toandv98.unitconverter.utils.StateUtils.CURRENT_RESULT_UNIT;
 
 public class ConvertersPresenter extends BasePresenter<ConvertersContract.View, IDataManager> implements ConvertersContract.Presenter {
 
-    private List<Unit> units;
-    private int conversionId;
+    private List<Unit> mUnits;
+    private int mConversionId;
+    private CharSequence mCurrentInput = DEFAULT_INPUT;
+    private Unit mInputUnit;
+    private Unit mResultUnit;
 
     public ConvertersPresenter(ConvertersContract.View view, IDataManager dataManager) {
         super(view, dataManager);
@@ -31,94 +28,99 @@ public class ConvertersPresenter extends BasePresenter<ConvertersContract.View, 
 
     @Override
     public void onReceivedConversionId(int id) {
-        conversionId = id;
+        mConversionId = id;
         if (id == CURRENCY) {
             dataManager.updateFromRemote();
         }
-        units = dataManager.getUnitsByConversionId(conversionId);
-        Unit unit = units.get(DEFAULT_POSITION);
-        StateUtils.setDefaultState(unit);
+        mUnits = dataManager.getUnitsByConversionId(mConversionId);
+        mInputUnit = mUnits.get(DEFAULT_POSITION);
+        mResultUnit = mInputUnit;
 
-        view.setTitle(dataManager.getConversionById(conversionId).getTitleRes());
+        view.setTitle(dataManager.getConversionById(mConversionId).getTitleRes());
         view.focusInput();
-        view.loadUnit(units);
-        view.updateInputUnit(unit.getLabelRes());
-        view.updateResultUnit(unit.getLabelRes());
+        view.loadUnit(mUnits);
+        view.updateInputUnit(mInputUnit.getLabelRes());
+        view.updateResultUnit(mResultUnit.getLabelRes());
         view.updateResultValue(DEFAULT_INPUT);
     }
 
     @Override
     public void onReceiveUpdateRates(String msg) {
         view.showMessage(msg);
-        units = dataManager.getUnitsByConversionId(conversionId);
+        mUnits = dataManager.getUnitsByConversionId(mConversionId);
     }
 
     @Override
     public void onSwapButtonClick() {
-        StateUtils.swapUnit();
-        view.swapConversion();
-        convert(CURRENT_INPUT);
+        Unit temp = mInputUnit;
+        mInputUnit = mResultUnit;
+        mResultUnit = temp;
+        view.swapConversion(mInputUnit.getLabelRes(), mResultUnit.getLabelRes());
+        convert(mCurrentInput);
     }
 
     @Override
     public void onClearItemClick() {
-        CURRENT_INPUT = DEFAULT_INPUT;
+        mCurrentInput = DEFAULT_INPUT;
         view.clearInputValue();
     }
 
     @Override
     public void onFabInputUnitClick() {
-        view.navigateToUnitSearch(INPUT_UNIT, conversionId);
+        view.navigateToUnitSearch(INPUT_UNIT, mConversionId);
     }
 
     @Override
     public void onFabResultUnitClick() {
-        view.navigateToUnitSearch(RESULT_UNIT, conversionId);
+        view.navigateToUnitSearch(RESULT_UNIT, mConversionId);
     }
 
     @Override
     public void onInputUnitSelect(int position) {
-        Unit unit = units.get(position);
+        Unit unit = mUnits.get(position);
         view.updateInputUnit(unit.getLabelRes());
         view.updateRadioInput(position);
-        CURRENT_INPUT_UNIT = unit;
-        CURRENT_INPUT_POSITION = position;
-        convert(CURRENT_INPUT);
+        mInputUnit = unit;
+        convert(mCurrentInput);
     }
 
     @Override
     public void onResultUnitSelect(int position) {
-        Unit unit = units.get(position);
+        Unit unit = mUnits.get(position);
         view.updateResultUnit(unit.getLabelRes());
         view.updateRadioResult(position);
-        CURRENT_RESULT_UNIT = unit;
-        CURRENT_RESULT_POSITION = position;
-        convert(CURRENT_INPUT);
+        mResultUnit = unit;
+        convert(mCurrentInput);
     }
 
     @Override
     public void onInputValueChanged(CharSequence s) {
-        CURRENT_INPUT = s;
+        mCurrentInput = s;
         convert(s);
     }
 
     @Override
-    public void onFragmentSearchFinished() {
+    public void onFragmentSearchFinished(int resultCode, int position) {
         view.focusInput();
-        view.updateRadioInput(CURRENT_INPUT_POSITION);
-        view.updateRadioResult(CURRENT_RESULT_POSITION);
-        view.updateInputUnit(CURRENT_INPUT_UNIT.getLabelRes());
-        view.updateResultUnit(CURRENT_RESULT_UNIT.getLabelRes());
-        convert(CURRENT_INPUT);
+        if (resultCode == INPUT_UNIT) {
+            mInputUnit = mUnits.get(position);
+            view.updateRadioInput(position);
+            view.updateInputUnit(mInputUnit.getLabelRes());
+        } else if (resultCode == RESULT_UNIT) {
+            mResultUnit = mUnits.get(position);
+            view.updateRadioResult(position);
+            view.updateResultUnit(mResultUnit.getLabelRes());
+        }
+        convert(mCurrentInput);
     }
 
     private void convert(CharSequence s) {
         String result = DEFAULT_INPUT;
         if (s.length() != 0 && !s.toString().equals(".")) {
-            if (conversionId == TEMPERATURE) {
-                result = ConvertUtils.convertTemperature(Double.parseDouble(s.toString()));
+            if (mConversionId == TEMPERATURE) {
+                result = ConvertUtils.convertTemperature(Double.parseDouble(s.toString()), mInputUnit, mResultUnit);
             } else {
-                result = ConvertUtils.convert(Double.parseDouble(s.toString()));
+                result = ConvertUtils.convert(Double.parseDouble(s.toString()), mInputUnit, mResultUnit);
             }
         }
         view.updateResultValue(result);

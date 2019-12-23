@@ -1,4 +1,4 @@
-package vn.com.toandv98.unitconverter.ui.unitsearch;
+package vn.com.toandv98.unitconverter.ui.converters.unitsearch;
 
 import java.util.List;
 
@@ -10,18 +10,18 @@ public interface UnitSearchContract {
     interface View extends IBaseView {
         void focusInput();
 
-        void finishFragment();
+        void finishFragment(int resultCode, int position);
 
         void loadUnit(List<Unit> units);
     }
 
     interface Presenter extends IBasePresenter {
-        void onReceivedBundle(int unitType, int conversionId);
+        void onReceivedBundle(int resultCode, int conversionId);
 
         void onItemSearchClick(Unit unit, int position);
     }
 
     interface OnFinishListener {
-        void onFinished();
+        void onFinished(int resultCode, int position);
     }
 }

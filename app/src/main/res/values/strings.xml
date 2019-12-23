@@ -329,4 +329,22 @@
     <string name="brl_">BRL</string>
 
     <string name="msg_error_update_rates">Có lỗi xảy ra khi cập nhật tỷ giá:\u0020</string>
+    <string name="description_conversion_icon">Conversion icon</string>
+    <string name="hint_conversion_name">Nhập tên chuyển đổi</string>
+    <string name="title_edit_conversion">Tùy chỉnh chuyển đổi</string>
+    <string name="label_edit_unit">Tùy chỉnh đơn vị</string>
+    <string name="description_unit_icon">Unit custom icon</string>
+    <string name="title_dialog_edit_unit">Tùy chỉnh đơn vị</string>
+    <string name="hint_unit_name">Nhập tên đơn vị</string>
+    <string name="text_button_save">Lưu</string>
+    <string name="text_radio_from_base">Từ đơn vị mốc</string>
+    <string name="text_radio_to_base">Sang đơn vị mốc</string>
+    <string name="hint_unit_value">Nhập tỷ lệ so với mốc</string>
+    <string name="msg_fill_input">Vui lòng điền đủ thông tin!</string>
+    <string name="label_no_unit">Không có đơn vị nào</string>
+    <string name="description_icon_delete">Delete icon</string>
+    <string name="msg_deleted_item">Đã xóa đơn vị</string>
+    <string name="action_undo">Hoàn tác</string>
+    <string name="msg_input_conversion_name">Nhập tên chuyển đổi và đơn vị!</string>
+    <string name="label_unit_rate">Bằng %1$s đơn vị</string>
 </resources>

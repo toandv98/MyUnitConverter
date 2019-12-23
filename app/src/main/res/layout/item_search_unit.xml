@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_5dp"
-    android:layout_marginStart="@dimen/margin_5dp"
-    android:layout_marginEnd="@dimen/margin_5dp"
+    android:layout_margin="@dimen/margin_2dp"
     app:cardCornerRadius="@dimen/card_radius_5dp">
 
     <Button
@@ -13,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?android:selectableItemBackground"
-        android:drawablePadding="10dp"
+        android:drawablePadding="@dimen/padding_10dp"
         android:padding="@dimen/margin_5dp"
         android:textAlignment="textStart"
         android:textAllCaps="false" />

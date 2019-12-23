@@ -19,7 +19,7 @@
         tools:targetApi="m">
 
         <activity
-            android:name=".ui.SplashScreen"
+            android:name=".ui.splash.SplashScreen"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,6 +30,9 @@
         </activity>
         <activity android:name=".ui.main.MainActivity" />
         <activity android:name=".ui.converters.ConvertersActivity" />
+        <activity
+            android:name=".ui.customs.editconversion.EditConversionActivity"
+            android:theme="@style/AppThemeActionBar" />
 
         <service
             android:name=".services.UpdateCurrencyService"

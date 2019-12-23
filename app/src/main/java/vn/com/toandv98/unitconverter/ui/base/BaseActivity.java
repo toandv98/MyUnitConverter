@@ -25,7 +25,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
 
     @Override
     protected final void onDestroy() {
-        presenter.onDestroy();
+        presenter.onViewDetached();
         super.onDestroy();
     }
 

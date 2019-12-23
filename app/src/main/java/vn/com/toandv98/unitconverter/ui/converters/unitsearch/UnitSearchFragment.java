@@ -1,4 +1,4 @@
-package vn.com.toandv98.unitconverter.ui.unitsearch;
+package vn.com.toandv98.unitconverter.ui.converters.unitsearch;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -22,25 +22,25 @@ import vn.com.toandv98.unitconverter.data.entities.Unit;
 import vn.com.toandv98.unitconverter.ui.base.BaseFragment;
 
 import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_CONVERSION_ID;
-import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_TYPE_UNIT;
+import static vn.com.toandv98.unitconverter.utils.Constrants.UNIT_SEARCH_RESULT_CODE;
 
 public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presenter>
         implements UnitSearchContract.View, SearchView.OnQueryTextListener {
 
-    private Toolbar toolbar;
-    private SearchView svUnit;
-    private RecyclerView rvUnit;
-    private UnitSearchAdapter adapter;
-    private UnitSearchContract.OnFinishListener callback;
+    private Toolbar mToolbar;
+    private SearchView mSvUnit;
+    private RecyclerView mRvUnit;
+    private UnitSearchAdapter mAdapter;
+    private UnitSearchContract.OnFinishListener mCallback;
 
     public void setOnFinishListener(UnitSearchContract.OnFinishListener callback) {
-        this.callback = callback;
+        this.mCallback = callback;
     }
 
-    public static UnitSearchFragment newInstance(int typeUnit, int conversionId) {
+    public static UnitSearchFragment newInstance(int resultCode, int conversionId) {
         UnitSearchFragment unitSearchFragment = new UnitSearchFragment();
         Bundle args = new Bundle();
-        args.putInt(EXTRA_NAME_TYPE_UNIT, typeUnit);
+        args.putInt(UNIT_SEARCH_RESULT_CODE, resultCode);
         args.putInt(EXTRA_NAME_CONVERSION_ID, conversionId);
         unitSearchFragment.setArguments(args);
         return unitSearchFragment;
@@ -58,15 +58,15 @@ public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presente
 
     @Override
     protected void initView(View view) {
-        toolbar = view.findViewById(R.id.toolbar_unit_search);
-        svUnit = view.findViewById(R.id.sv_unit_search);
-        rvUnit = view.findViewById(R.id.rv_unit_search);
+        mToolbar = view.findViewById(R.id.toolbar_unit_search);
+        mSvUnit = view.findViewById(R.id.sv_unit_search);
+        mRvUnit = view.findViewById(R.id.rv_unit_search);
     }
 
     @Override
     protected void setupView(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-        getBaseActivity().getDelegate().setSupportActionBar(toolbar);
+        getBaseActivity().getDelegate().setSupportActionBar(mToolbar);
         ActionBar actionBar = getBaseActivity().getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -74,13 +74,13 @@ public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presente
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            presenter.onReceivedBundle(bundle.getInt(EXTRA_NAME_TYPE_UNIT), bundle.getInt(EXTRA_NAME_CONVERSION_ID));
+            presenter.onReceivedBundle(bundle.getInt(UNIT_SEARCH_RESULT_CODE), bundle.getInt(EXTRA_NAME_CONVERSION_ID));
         }
     }
 
     @Override
     protected void initListener() {
-        svUnit.setOnQueryTextListener(this);
+        mSvUnit.setOnQueryTextListener(this);
     }
 
     @Override
@@ -100,25 +100,25 @@ public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presente
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        adapter.getFilter().filter(query);
+        mAdapter.getFilter().filter(query);
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        adapter.getFilter().filter(newText);
+        mAdapter.getFilter().filter(newText);
         return false;
     }
 
     @Override
     public void focusInput() {
-        svUnit.requestFocus();
+        mSvUnit.requestFocus();
     }
 
     @Override
-    public void finishFragment() {
+    public void finishFragment(int resultCode, int position) {
         getBaseActivity().onBackPressed();
-        callback.onFinished();
+        mCallback.onFinished(resultCode, position);
     }
 
     @Override
@@ -127,9 +127,9 @@ public class UnitSearchFragment extends BaseFragment<UnitSearchContract.Presente
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             spanCount = 3;
         }
-        adapter = new UnitSearchAdapter(getBaseActivity(), presenter, units);
+        mAdapter = new UnitSearchAdapter(getBaseActivity(), presenter, units);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getBaseActivity(), spanCount);
-        rvUnit.setLayoutManager(layoutManager);
-        rvUnit.setAdapter(adapter);
+        mRvUnit.setLayoutManager(layoutManager);
+        mRvUnit.setAdapter(mAdapter);
     }
 }
