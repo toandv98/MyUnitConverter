@@ -32,7 +32,7 @@ public abstract class ConversionDao {
     //endregion
 
     //region Custom conversions
-    @Query("select * from conversion_custom")
+    @Query("select * from conversion_custom order by history desc")
     public abstract List<CustomConversion> getConversionCustoms();
 
     @Query("select * from unit_custom where conversion_id = :id")
