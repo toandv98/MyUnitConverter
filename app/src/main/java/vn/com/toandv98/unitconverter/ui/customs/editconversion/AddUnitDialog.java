@@ -25,14 +25,14 @@ import vn.com.toandv98.unitconverter.data.entities.CustomUnit;
 
 public class AddUnitDialog extends DialogFragment implements View.OnClickListener {
 
-    public static final String EXTRA_NAME_UNIT = "unit";
-    public static final String EXTRA_NAME_IS_ADD = "is_add_unit";
+    private static final String EXTRA_NAME_UNIT = "unit";
+    private static final String EXTRA_NAME_IS_ADD = "is_add_unit";
     private boolean isAddUnit;
     private FloatingActionButton mFabCancel;
     private Button mBtnSave;
     private CustomUnit mUnit;
     private EditText mEdtLabel, mEdtValue;
-    private RadioButton mRbFromBase, mRbToBase;
+    private RadioButton mRbToBase;
     private OnSaveUnitListener listener;
 
     public void setOnSaveUnitListener(OnSaveUnitListener listener) {
@@ -79,9 +79,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         mBtnSave = view.findViewById(R.id.btn_unit_save);
         mEdtLabel = view.findViewById(R.id.edt_dialog_unit_name);
         mEdtValue = view.findViewById(R.id.edt_unit_value);
-        mRbFromBase = view.findViewById(R.id.rb_value_from_base);
         mRbToBase = view.findViewById(R.id.rb_value_to_base);
-
         mBtnSave.setOnClickListener(this);
         mFabCancel.setOnClickListener(this);
 

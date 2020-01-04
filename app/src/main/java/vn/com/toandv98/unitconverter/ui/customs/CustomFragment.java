@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +32,7 @@ public class CustomFragment extends BaseFragment<CustomContract.Presenter>
     private RecyclerView mRvCustom;
     private FloatingActionButton mFabAdd;
     private CustomAdapter mAdapter;
+    private CoordinatorLayout mCoordinatorLayout;
 
     @Override
     protected int getLayout() {
@@ -47,6 +49,7 @@ public class CustomFragment extends BaseFragment<CustomContract.Presenter>
         mSvCustom = view.findViewById(R.id.sv_custom);
         mRvCustom = view.findViewById(R.id.rv_custom);
         mFabAdd = view.findViewById(R.id.fab_custom_add);
+        mCoordinatorLayout = view.findViewById(R.id.container_custom_tab);
     }
 
     @Override
@@ -106,8 +109,15 @@ public class CustomFragment extends BaseFragment<CustomContract.Presenter>
 
     @Override
     public void showSnackBar() {
-        Snackbar snackbar = Snackbar.make(mFabAdd, getString(R.string.msg_deleted_item), Snackbar.LENGTH_SHORT);
+        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, getString(R.string.msg_deleted_item), Snackbar.LENGTH_SHORT);
         snackbar.setAction(getString(R.string.action_undo), v -> presenter.onUndoClick());
+        snackbar.addCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar transientBottomBar, int event) {
+                super.onDismissed(transientBottomBar, event);
+                presenter.onSnackBarDismissed();
+            }
+        });
         snackbar.show();
     }
 

@@ -35,6 +35,10 @@ public interface CustomContract {
 
         void onSwipeRight(int position);
 
+        void onSnackBarDismissed();
+
+        void onUndoClick();
+
         void onSetupView();
 
         void onFabAddClick();
@@ -42,7 +46,5 @@ public interface CustomContract {
         void onItemClick(int pos);
 
         void onAddedConversions();
-
-        void onUndoClick();
     }
 }
