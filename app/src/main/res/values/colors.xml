@@ -8,4 +8,6 @@
     <color name="bg_white">#ffffff</color>
     <color name="stroke_color_grey">#DDDDDD</color>
     <color name="text_color_black">#000000</color>
+    <color name="bg_edit_item">#673AB7</color>
+    <color name="bg_delete_item">#F44336</color>
 </resources>

@@ -25,6 +25,8 @@ public interface CustomContract {
         void removeConversionFromList(int position);
 
         void navigateToAddConversion();
+
+        void showSnackBar();
     }
 
     interface Presenter extends IBasePresenter {
@@ -40,5 +42,7 @@ public interface CustomContract {
         void onItemClick(int pos);
 
         void onAddedConversions();
+
+        void onUndoClick();
     }
 }

@@ -117,7 +117,7 @@ public class EditConversionActivity extends BaseActivity<EditConversionContract.
     @Override
     public void showSnackBar() {
         Snackbar snackbar = Snackbar.make(mContainerView, getString(R.string.msg_deleted_item), Snackbar.LENGTH_LONG);
-        snackbar.setAction(getString(R.string.action_undo), v -> presenter.onUndoDelete());
+        snackbar.setAction(getString(R.string.action_undo), v -> presenter.onUndoClick());
         snackbar.show();
     }
 

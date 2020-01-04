@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -78,7 +79,7 @@ public class CustomFragment extends BaseFragment<CustomContract.Presenter>
                 new LinearLayoutManager(getBaseActivity(), RecyclerView.VERTICAL, false);
         mRvCustom.setLayoutManager(layoutManager);
         mRvCustom.setAdapter(mAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeItemTouchHelper(this));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeItemTouchHelper(getBaseActivity(), this));
         itemTouchHelper.attachToRecyclerView(mRvCustom);
     }
 
@@ -101,6 +102,13 @@ public class CustomFragment extends BaseFragment<CustomContract.Presenter>
     public void navigateToAddConversion() {
         Intent intent = new Intent(getBaseActivity(), EditConversionActivity.class);
         startActivityForResult(intent, ADD_CONVERSION_REQUEST_CODE);
+    }
+
+    @Override
+    public void showSnackBar() {
+        Snackbar snackbar = Snackbar.make(mFabAdd, getString(R.string.msg_deleted_item), Snackbar.LENGTH_SHORT);
+        snackbar.setAction(getString(R.string.action_undo), v -> presenter.onUndoClick());
+        snackbar.show();
     }
 
     @Override

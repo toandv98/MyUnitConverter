@@ -68,7 +68,7 @@ public class EditConversionPresenter extends BasePresenter<EditConversionContrac
     }
 
     @Override
-    public void onUndoDelete() {
+    public void onUndoClick() {
         mUnits.add(mPosition, mUndoUnit);
         view.addUnitItem(mPosition);
     }

@@ -9,6 +9,8 @@ import vn.com.toandv98.unitconverter.ui.base.BasePresenter;
 public class CustomPresenter extends BasePresenter<CustomContract.View, IDataManager> implements CustomContract.Presenter {
 
     private List<CustomConversion> mConversions;
+    private CustomConversion mUndoConversion;
+    private int mPosition;
 
     public CustomPresenter(CustomContract.View view, IDataManager dataManager) {
         super(view, dataManager);
@@ -16,13 +18,17 @@ public class CustomPresenter extends BasePresenter<CustomContract.View, IDataMan
 
     @Override
     public void onSwipeLeft(int position) {
+        mPosition = position;
+        mUndoConversion = mConversions.get(position);
         mConversions.remove(position);
         view.removeConversionFromList(position);
+        view.showSnackBar();
     }
 
     @Override
     public void onSwipeRight(int position) {
         view.navigateToAddConversion();
+        view.updateConversionOnList(position);
     }
 
     @Override
@@ -46,6 +52,12 @@ public class CustomPresenter extends BasePresenter<CustomContract.View, IDataMan
     public void onAddedConversions() {
         getLastData();
         view.addConversionToList(mConversions.size() - 1);
+    }
+
+    @Override
+    public void onUndoClick() {
+        mConversions.add(mPosition, mUndoConversion);
+        view.addConversionToList(mPosition);
     }
 
     private void getLastData() {

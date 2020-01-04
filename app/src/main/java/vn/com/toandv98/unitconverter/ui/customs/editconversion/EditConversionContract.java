@@ -41,6 +41,6 @@ public interface EditConversionContract {
 
         void onAddUnit(CustomUnit unit);
 
-        void onUndoDelete();
+        void onUndoClick();
     }
 }
