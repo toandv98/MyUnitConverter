@@ -10,15 +10,15 @@ import vn.com.toandv98.unitconverter.ui.base.IBaseView;
 
 public interface ConvertersContract {
     interface View extends IBaseView {
-        void setTitle(@StringRes int resId);
+        void setTitle(@StringRes int resId, String title);
 
         void focusInput();
 
-        void swapConversion(@StringRes int inputLabelRes, @StringRes int resultLabelRes);
+        void swapConversion(@StringRes int inputLabelRes, @StringRes int resultLabelRes, String inputLabel, String resultLabel);
 
-        void updateInputUnit(@StringRes int labelRes);
+        void updateInputUnit(@StringRes int labelRes, String label);
 
-        void updateResultUnit(@StringRes int labelRes);
+        void updateResultUnit(@StringRes int labelRes, String label);
 
         void updateRadioInput(int position);
 

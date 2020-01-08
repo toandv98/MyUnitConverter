@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -50,8 +49,6 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
     private TextView mTvInputUnit, mTvResultUnit;
     private RecyclerView mRvFromUnit, mRvToUnit;
     private UnitsAdapter mAdapterFrom, mAdapterTo;
-
-    public static final String TAG = "aaa";
 
     //region onCreate()
     @Override
@@ -129,7 +126,6 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onResume: ");
         super.onResume();
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(localReceiver, new IntentFilter(ACTION_UPDATE_RATES));
@@ -137,16 +133,19 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
 
     @Override
     protected void onPause() {
-        Log.d(TAG, "onPause: ");
         LocalBroadcastManager.getInstance(this)
                 .unregisterReceiver(localReceiver);
         super.onPause();
     }
 
     @Override
-    public void setTitle(int resId) {
+    public void setTitle(int resId, String title) {
         if (mActionBar != null) {
-            mActionBar.setTitle(resId);
+            if (resId == 0) {
+                mActionBar.setTitle(title);
+            } else {
+                mActionBar.setTitle(getString(resId) + title);
+            }
         }
     }
 
@@ -156,22 +155,26 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
     }
 
     @Override
-    public void swapConversion(int inputLabelRes, int resultLabelRes) {
+    public void swapConversion(int inputLabelRes, int resultLabelRes, String inputLabel, String resultLabel) {
         int lastPos = mAdapterFrom.getLastCheckedPosition();
         mAdapterFrom.updateRadio(mAdapterTo.getLastCheckedPosition());
         mAdapterTo.updateRadio(lastPos);
         mTvInputUnit.setText(inputLabelRes);
+        mTvInputUnit.append(inputLabel);
         mTvResultUnit.setText(resultLabelRes);
+        mTvResultUnit.append(resultLabel);
     }
 
     @Override
-    public void updateInputUnit(int labelRes) {
+    public void updateInputUnit(int labelRes, String label) {
         mTvInputUnit.setText(labelRes);
+        mTvInputUnit.append(label);
     }
 
     @Override
-    public void updateResultUnit(int labelRes) {
+    public void updateResultUnit(int labelRes, String label) {
         mTvResultUnit.setText(labelRes);
+        mTvResultUnit.append(label);
     }
 
     @Override

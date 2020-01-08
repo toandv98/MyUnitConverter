@@ -35,6 +35,9 @@ public abstract class ConversionDao {
     @Query("select * from conversion_custom order by history desc")
     public abstract List<CustomConversion> getConversionCustoms();
 
+    @Query("select * from conversion_custom where id = :id")
+    public abstract CustomConversion getConversionCustomById(int id);
+
     @Query("select * from unit_custom where conversion_id = :id")
     public abstract List<CustomUnit> getUnitCustomsByConversionId(int id);
 
@@ -47,6 +50,16 @@ public abstract class ConversionDao {
         insertUnitCustoms(customUnits);
     }
 
+    @Transaction
+    public void updateConversionWithUnits(CustomConversion custom, List<CustomUnit> newUnits) {
+        updateCustomConversion(custom);
+        for (CustomUnit unit : newUnits) {
+            unit.setConversionId(custom.getId());
+        }
+        deleteUnitCustomsByConversionId(custom.getId());
+        insertUnitCustoms(newUnits);
+    }
+
     @Insert
     public abstract long insertConversionCustom(CustomConversion custom);
 
@@ -55,6 +68,9 @@ public abstract class ConversionDao {
 
     @Query("update conversion_custom set history = history + 1 where id = :id")
     public abstract void updateHistory(int id);
+
+    @Update
+    public abstract void updateCustomConversion(CustomConversion custom);
 
     @Transaction
     public void deleteConversions(CustomConversion custom) {

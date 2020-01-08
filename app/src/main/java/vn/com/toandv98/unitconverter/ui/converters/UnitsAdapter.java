@@ -56,6 +56,7 @@ public class UnitsAdapter extends RecyclerView.Adapter<UnitsAdapter.UnitViewHold
     public void onBindViewHolder(@NonNull UnitViewHolder holder, int position) {
         Unit unit = units.get(position);
         holder.radioButton.setText(unit.getLabelRes());
+        holder.radioButton.append(unit.getLabelCustom());
         holder.radioButton.setChecked(position == lastCheckedPosition);
 
         Drawable drawable = context.getResources().getDrawable(unit.getDrawableRes());

@@ -83,7 +83,7 @@ public class DataManager implements IDataManager {
 
         for (ConversionRoom item : mConversionDao.getConversions()) {
             results.add(new Conversion(item.getId(),
-                    toDrawableResId(item.getImageRes()), toStringResId(item.getTitleRes())));
+                    toDrawableResId(item.getImageRes()), toStringResId(item.getTitleRes()), ""));
         }
 
         return results;
@@ -99,7 +99,14 @@ public class DataManager implements IDataManager {
         List<Unit> results = new ArrayList<>();
         for (UnitRoom unitR : mConversionDao.getUnitsByConversionId(id)) {
             results.add(new Unit(unitR.getId(), toStringResId(unitR.getLabelRes()),
-                    toDrawableResId(unitR.getDrawableRes()), unitR.getToBase(), unitR.getFromBase()));
+                    toDrawableResId(unitR.getDrawableRes()), "", unitR.getToBase(), unitR.getFromBase()));
+        }
+
+        if (results.isEmpty()) {
+            for (CustomUnit customUnit : mConversionDao.getUnitCustomsByConversionId(id)) {
+                results.add(new Unit(customUnit.getId(), toStringResId("blank"),
+                        toDrawableResId("ic_unit_edit"), customUnit.getLabel(), customUnit.getToBase(), customUnit.getFromBase()));
+            }
         }
         return results;
     }
@@ -111,14 +118,28 @@ public class DataManager implements IDataManager {
 
     @Override
     public Conversion getConversionById(int id) {
+
+        Conversion result;
         ConversionRoom conversionR = mConversionDao.getConversionById(id);
-        return new Conversion(conversionR.getId(),
-                toDrawableResId(conversionR.getImageRes()), toStringResId(conversionR.getTitleRes()));
+        if (conversionR != null) {
+            result = new Conversion(conversionR.getId(),
+                    toDrawableResId(conversionR.getImageRes()), toStringResId(conversionR.getTitleRes()), "");
+        } else {
+            CustomConversion customConversion = mConversionDao.getConversionCustomById(id);
+            result = new Conversion(customConversion.getId(),
+                    toDrawableResId("ic_unit_edit"), toStringResId("blank"), customConversion.getLabel());
+        }
+        return result;
     }
 
     @Override
     public void insertConversionWithUnits(CustomConversion custom, List<CustomUnit> customUnits) {
         mConversionDao.insertConversionWithUnits(custom, customUnits);
+    }
+
+    @Override
+    public void updateConversionWithUnits(CustomConversion custom, List<CustomUnit> newUnits) {
+        mConversionDao.updateConversionWithUnits(custom, newUnits);
     }
 
     @Override

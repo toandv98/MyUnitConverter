@@ -21,9 +21,11 @@ import vn.com.toandv98.unitconverter.R;
 import vn.com.toandv98.unitconverter.data.DataManager;
 import vn.com.toandv98.unitconverter.data.entities.CustomConversion;
 import vn.com.toandv98.unitconverter.ui.base.BaseFragment;
+import vn.com.toandv98.unitconverter.ui.converters.ConvertersActivity;
 import vn.com.toandv98.unitconverter.ui.customs.editconversion.EditConversionActivity;
 
 import static vn.com.toandv98.unitconverter.utils.Constrants.ADD_CONVERSION_REQUEST_CODE;
+import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_CONVERSION_ID;
 
 public class CustomFragment extends BaseFragment<CustomContract.Presenter>
         implements CustomContract.View, SearchView.OnQueryTextListener, CustomContract.OnSwipeListener {
@@ -102,9 +104,17 @@ public class CustomFragment extends BaseFragment<CustomContract.Presenter>
     }
 
     @Override
-    public void navigateToAddConversion() {
+    public void navigateToAddConversion(CustomConversion conversion) {
         Intent intent = new Intent(getBaseActivity(), EditConversionActivity.class);
+        intent.putExtra(EXTRA_NAME_CONVERSION_ID, conversion);
         startActivityForResult(intent, ADD_CONVERSION_REQUEST_CODE);
+    }
+
+    @Override
+    public void navigateToConverters(int id) {
+        Intent intent = new Intent(getBaseActivity(), ConvertersActivity.class);
+        intent.putExtra(EXTRA_NAME_CONVERSION_ID, id);
+        startActivity(intent);
     }
 
     @Override
@@ -125,7 +135,9 @@ public class CustomFragment extends BaseFragment<CustomContract.Presenter>
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_CONVERSION_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            presenter.onAddedConversions();
+            if (data != null) {
+                presenter.onEditConversionsResult(data.getBooleanExtra("is_add", true));
+            }
         }
     }
 

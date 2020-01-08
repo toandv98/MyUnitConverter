@@ -24,7 +24,9 @@ public interface CustomContract {
 
         void removeConversionFromList(int position);
 
-        void navigateToAddConversion();
+        void navigateToAddConversion(CustomConversion conversion);
+
+        void navigateToConverters(int id);
 
         void showSnackBar();
     }
@@ -45,6 +47,6 @@ public interface CustomContract {
 
         void onItemClick(int pos);
 
-        void onAddedConversions();
+        void onEditConversionsResult(boolean isAdd);
     }
 }

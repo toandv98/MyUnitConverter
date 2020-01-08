@@ -46,6 +46,7 @@ public class UnitSearchAdapter extends RecyclerView.Adapter<UnitSearchAdapter.Un
     public void onBindViewHolder(@NonNull UnitSearchViewHolder holder, int position) {
         Unit unit = mFilters.get(position);
         holder.btnItem.setText(unit.getLabelRes());
+        holder.btnItem.append(unit.getLabelCustom());
 
         Drawable drawable = mContext.getResources().getDrawable(unit.getDrawableRes());
         drawable.setBounds(0, 0, 90, 90);
@@ -70,7 +71,7 @@ public class UnitSearchAdapter extends RecyclerView.Adapter<UnitSearchAdapter.Un
                 } else {
                     List<Unit> items = new ArrayList<>();
                     for (Unit item : mUnits) {
-                        if (AppUtils.removeAccent(mContext.getString(item.getLabelRes())).toLowerCase()
+                        if (AppUtils.removeAccent(mContext.getString(item.getLabelRes()) + item.getLabelCustom()).toLowerCase()
                                 .contains(AppUtils.removeAccent(str).toLowerCase())) {
                             items.add(item);
                         }

@@ -2,12 +2,14 @@ package vn.com.toandv98.unitconverter.data.entities;
 
 public class Unit {
     private int id, labelRes, drawableRes;
+    private String labelCustom;
     private double toBase, fromBase;
 
-    public Unit(int id, int labelRes, int drawableRes, double toBase, double fromBase) {
+    public Unit(int id, int labelRes, int drawableRes, String labelCustom, double toBase, double fromBase) {
         this.id = id;
         this.labelRes = labelRes;
         this.drawableRes = drawableRes;
+        this.labelCustom = labelCustom;
         this.toBase = toBase;
         this.fromBase = fromBase;
     }
@@ -30,6 +32,14 @@ public class Unit {
 
     public int getLabelRes() {
         return labelRes;
+    }
+
+    public String getLabelCustom() {
+        return labelCustom;
+    }
+
+    public void setLabelCustom(String labelCustom) {
+        this.labelCustom = labelCustom;
     }
 
     public void setLabelRes(int labelRes) {

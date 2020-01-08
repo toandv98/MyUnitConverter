@@ -3,6 +3,7 @@ package vn.com.toandv98.unitconverter.ui.converters;
 import java.util.List;
 
 import vn.com.toandv98.unitconverter.data.IDataManager;
+import vn.com.toandv98.unitconverter.data.entities.Conversion;
 import vn.com.toandv98.unitconverter.data.entities.Unit;
 import vn.com.toandv98.unitconverter.ui.base.BasePresenter;
 import vn.com.toandv98.unitconverter.utils.ConvertUtils;
@@ -36,11 +37,12 @@ public class ConvertersPresenter extends BasePresenter<ConvertersContract.View, 
         mInputUnit = mUnits.get(DEFAULT_POSITION);
         mResultUnit = mInputUnit;
 
-        view.setTitle(dataManager.getConversionById(mConversionId).getTitleRes());
+        Conversion conversion = dataManager.getConversionById(mConversionId);
+        view.setTitle(conversion.getTitleRes(), conversion.getTitleCustom());
         view.focusInput();
         view.loadUnit(mUnits);
-        view.updateInputUnit(mInputUnit.getLabelRes());
-        view.updateResultUnit(mResultUnit.getLabelRes());
+        view.updateInputUnit(mInputUnit.getLabelRes(), mInputUnit.getLabelCustom());
+        view.updateResultUnit(mResultUnit.getLabelRes(), mResultUnit.getLabelCustom());
         view.updateResultValue(DEFAULT_INPUT);
     }
 
@@ -55,7 +57,8 @@ public class ConvertersPresenter extends BasePresenter<ConvertersContract.View, 
         Unit temp = mInputUnit;
         mInputUnit = mResultUnit;
         mResultUnit = temp;
-        view.swapConversion(mInputUnit.getLabelRes(), mResultUnit.getLabelRes());
+        view.swapConversion(mInputUnit.getLabelRes(), mResultUnit.getLabelRes(),
+                mInputUnit.getLabelCustom(), mResultUnit.getLabelCustom());
         convert(mCurrentInput);
     }
 
@@ -78,7 +81,7 @@ public class ConvertersPresenter extends BasePresenter<ConvertersContract.View, 
     @Override
     public void onInputUnitSelect(int position) {
         Unit unit = mUnits.get(position);
-        view.updateInputUnit(unit.getLabelRes());
+        view.updateInputUnit(unit.getLabelRes(), unit.getLabelCustom());
         view.updateRadioInput(position);
         mInputUnit = unit;
         convert(mCurrentInput);
@@ -87,7 +90,7 @@ public class ConvertersPresenter extends BasePresenter<ConvertersContract.View, 
     @Override
     public void onResultUnitSelect(int position) {
         Unit unit = mUnits.get(position);
-        view.updateResultUnit(unit.getLabelRes());
+        view.updateResultUnit(unit.getLabelRes(), unit.getLabelCustom());
         view.updateRadioResult(position);
         mResultUnit = unit;
         convert(mCurrentInput);
@@ -105,11 +108,11 @@ public class ConvertersPresenter extends BasePresenter<ConvertersContract.View, 
         if (resultCode == INPUT_UNIT) {
             mInputUnit = mUnits.get(position);
             view.updateRadioInput(position);
-            view.updateInputUnit(mInputUnit.getLabelRes());
+            view.updateInputUnit(mInputUnit.getLabelRes(), mInputUnit.getLabelCustom());
         } else if (resultCode == RESULT_UNIT) {
             mResultUnit = mUnits.get(position);
             view.updateRadioResult(position);
-            view.updateResultUnit(mResultUnit.getLabelRes());
+            view.updateResultUnit(mResultUnit.getLabelRes(), mResultUnit.getLabelCustom());
         }
         convert(mCurrentInput);
     }

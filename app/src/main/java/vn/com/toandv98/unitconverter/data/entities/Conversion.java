@@ -4,11 +4,13 @@ public class Conversion {
     private int id;
     private int imageRes;
     private int titleRes;
+    private String titleCustom;
 
-    public Conversion(int id, int imageRes, int titleRes) {
+    public Conversion(int id, int imageRes, int titleRes, String titleCustom) {
         this.id = id;
         this.imageRes = imageRes;
         this.titleRes = titleRes;
+        this.titleCustom = titleCustom;
     }
 
     public int getId() {
@@ -33,5 +35,13 @@ public class Conversion {
 
     public void setTitleRes(int titleRes) {
         this.titleRes = titleRes;
+    }
+
+    public String getTitleCustom() {
+        return titleCustom;
+    }
+
+    public void setTitleCustom(String titleCustom) {
+        this.titleCustom = titleCustom;
     }
 }

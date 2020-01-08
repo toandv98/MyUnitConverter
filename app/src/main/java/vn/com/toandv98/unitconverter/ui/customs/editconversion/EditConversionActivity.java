@@ -1,6 +1,7 @@
 package vn.com.toandv98.unitconverter.ui.customs.editconversion;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import vn.com.toandv98.unitconverter.data.DataManager;
 import vn.com.toandv98.unitconverter.data.entities.CustomUnit;
 import vn.com.toandv98.unitconverter.ui.base.BaseActivity;
 
+import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_CONVERSION_ID;
 import static vn.com.toandv98.unitconverter.utils.Constrants.UNIT_DIALOG_TAG;
 
 public class EditConversionActivity extends BaseActivity<EditConversionContract.Presenter>
@@ -62,7 +64,7 @@ public class EditConversionActivity extends BaseActivity<EditConversionContract.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         mEdtConversionName.requestFocus();
-        presenter.onReceivedId(0);
+        presenter.onReceivedId(getIntent().getParcelableExtra(EXTRA_NAME_CONVERSION_ID));
     }
 
     @Override
@@ -92,8 +94,15 @@ public class EditConversionActivity extends BaseActivity<EditConversionContract.
     }
 
     @Override
+    public void setConversionName(String label) {
+        mEdtConversionName.setText(label);
+    }
+
+    @Override
     public void loadRecyclerView(List<CustomUnit> customUnits) {
-        mTvNoUnit.setVisibility(View.VISIBLE);
+        if (customUnits.isEmpty()) {
+            mTvNoUnit.setVisibility(View.VISIBLE);
+        }
         mAdapter = new AddedUnitsAdapter(this, customUnits, presenter);
 
         RecyclerView.LayoutManager layoutManager =
@@ -128,8 +137,10 @@ public class EditConversionActivity extends BaseActivity<EditConversionContract.
     }
 
     @Override
-    public void finishOk() {
-        setResult(RESULT_OK);
+    public void finishOk(boolean isAdd) {
+        Intent result = new Intent();
+        result.putExtra("is_add", isAdd);
+        setResult(RESULT_OK, result);
         finish();
     }
 

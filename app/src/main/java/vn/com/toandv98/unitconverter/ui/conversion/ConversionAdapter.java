@@ -47,6 +47,7 @@ public class ConversionAdapter extends RecyclerView.Adapter<ConversionAdapter.Co
     public void onBindViewHolder(@NonNull ConversionViewHolder holder, int position) {
         Conversion item = mDataFilters.get(position);
         holder.tvTitle.setText(item.getTitleRes());
+        holder.tvTitle.append(item.getTitleCustom());
         holder.ivIcon.setImageDrawable(mContext.getDrawable(item.getImageRes()));
     }
 
@@ -67,7 +68,7 @@ public class ConversionAdapter extends RecyclerView.Adapter<ConversionAdapter.Co
                 } else {
                     List<Conversion> items = new ArrayList<>();
                     for (Conversion item : mData) {
-                        if (AppUtils.removeAccent(mContext.getString(item.getTitleRes())).toLowerCase()
+                        if (AppUtils.removeAccent(mContext.getString(item.getTitleRes()) + item.getTitleCustom()).toLowerCase()
                                 .contains(AppUtils.removeAccent(str).toLowerCase())) {
                             items.add(item);
                         }

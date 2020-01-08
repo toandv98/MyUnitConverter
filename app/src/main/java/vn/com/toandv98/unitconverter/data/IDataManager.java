@@ -32,6 +32,8 @@ public interface IDataManager {
 
     void insertConversionWithUnits(CustomConversion custom, List<CustomUnit> customUnits);
 
+    void updateConversionWithUnits(CustomConversion custom, List<CustomUnit> newUnits);
+
     void updateHistory(int id);
 
     void deleteConversions(CustomConversion custom);

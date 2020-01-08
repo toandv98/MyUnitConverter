@@ -11,7 +11,7 @@ public class CustomPresenter extends BasePresenter<CustomContract.View, IDataMan
 
     private List<CustomConversion> mConversions;
     private List<CustomConversion> mUndoConversions;
-    private int mPosition;
+    private int mUndoPosition, mUpdatePosition;
 
     public CustomPresenter(CustomContract.View view, IDataManager dataManager) {
         super(view, dataManager);
@@ -20,7 +20,7 @@ public class CustomPresenter extends BasePresenter<CustomContract.View, IDataMan
 
     @Override
     public void onSwipeLeft(int position) {
-        mPosition = position;
+        mUndoPosition = position;
         mUndoConversions.add(mConversions.get(position));
         mConversions.remove(position);
         view.removeConversionFromList(position);
@@ -29,8 +29,9 @@ public class CustomPresenter extends BasePresenter<CustomContract.View, IDataMan
 
     @Override
     public void onSwipeRight(int position) {
-        view.navigateToAddConversion();
-        view.updateConversionOnList(position);
+        mUpdatePosition = position;
+        view.navigateToAddConversion(mConversions.get(mUpdatePosition));
+        view.updateConversionOnList(mUpdatePosition);
     }
 
     @Override
@@ -44,9 +45,9 @@ public class CustomPresenter extends BasePresenter<CustomContract.View, IDataMan
 
     @Override
     public void onUndoClick() {
-        mConversions.add(mPosition, mUndoConversions.get(0));
+        mConversions.add(mUndoPosition, mUndoConversions.get(0));
         mUndoConversions.remove(0);
-        view.addConversionToList(mPosition);
+        view.addConversionToList(mUndoPosition);
     }
 
     @Override
@@ -57,19 +58,24 @@ public class CustomPresenter extends BasePresenter<CustomContract.View, IDataMan
 
     @Override
     public void onFabAddClick() {
-        view.navigateToAddConversion();
+        view.navigateToAddConversion(new CustomConversion("", 0));
     }
 
     @Override
     public void onItemClick(int pos) {
-        dataManager.updateHistory(mConversions.get(pos).getId());
-        view.showMessage(String.valueOf(pos));
+        int id = mConversions.get(pos).getId();
+        dataManager.updateHistory(id);
+        view.navigateToConverters(id);
     }
 
     @Override
-    public void onAddedConversions() {
+    public void onEditConversionsResult(boolean isAdd) {
         getLastData();
-        view.addConversionToList(mConversions.size() - 1);
+        if (isAdd) {
+            view.addConversionToList(mConversions.size() - 1);
+        } else {
+            view.updateConversionOnList(mUpdatePosition);
+        }
     }
 
     private void getLastData() {

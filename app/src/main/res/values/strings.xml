@@ -21,7 +21,7 @@
     <string name="label_from">From</string>
     <string name="label_to">To</string>
     <string name="title_item_swap">Swap</string>
-
+    <string name="blank"> </string>
 
     <string name="channel_name_update">Cập nhật</string>
     <string name="description_update_channel">Cập nhật dữ liệu mới</string>

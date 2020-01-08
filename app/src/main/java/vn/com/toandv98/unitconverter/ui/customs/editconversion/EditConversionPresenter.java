@@ -15,12 +15,23 @@ public class EditConversionPresenter extends BasePresenter<EditConversionContrac
     }
 
     private List<CustomUnit> mUnits;
-    private int mPosition;
     private CustomUnit mUndoUnit;
+    private CustomConversion mNewConversion;
+    private int mPosition;
+    private boolean mIsAdd;
 
     @Override
-    public void onReceivedId(int id) {
-        mUnits = new ArrayList<>();
+    public void onReceivedId(CustomConversion conversion) {
+        mNewConversion = conversion;
+        int conversionId = conversion.getId();
+        if (conversionId == 0) {
+            mIsAdd = true;
+            mUnits = new ArrayList<>();
+        } else {
+            mIsAdd = false;
+            mUnits = dataManager.getUnitCustomsByConversionId(conversionId);
+        }
+        view.setConversionName(conversion.getLabel());
         view.loadRecyclerView(mUnits);
     }
 
@@ -34,9 +45,12 @@ public class EditConversionPresenter extends BasePresenter<EditConversionContrac
         if (label.trim().length() == 0 || mUnits.size() == 0) {
             view.showError();
         } else {
-            CustomConversion conversion = new CustomConversion(label, 0);
-            dataManager.insertConversionWithUnits(conversion, mUnits);
-            view.finishOk();
+            if (mIsAdd) {
+                dataManager.insertConversionWithUnits(mNewConversion, mUnits);
+            } else {
+                dataManager.updateConversionWithUnits(mNewConversion, mUnits);
+            }
+            view.finishOk(mIsAdd);
         }
     }
 
