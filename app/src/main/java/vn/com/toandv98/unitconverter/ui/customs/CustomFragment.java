@@ -26,6 +26,7 @@ import vn.com.toandv98.unitconverter.ui.customs.editconversion.EditConversionAct
 
 import static vn.com.toandv98.unitconverter.utils.Constrants.ADD_CONVERSION_REQUEST_CODE;
 import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_CONVERSION_ID;
+import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_IS_ADD;
 
 public class CustomFragment extends BaseFragment<CustomContract.Presenter>
         implements CustomContract.View, SearchView.OnQueryTextListener, CustomContract.OnSwipeListener {
@@ -136,7 +137,7 @@ public class CustomFragment extends BaseFragment<CustomContract.Presenter>
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_CONVERSION_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
-                presenter.onEditConversionsResult(data.getBooleanExtra("is_add", true));
+                presenter.onEditConversionsResult(data.getBooleanExtra(EXTRA_NAME_IS_ADD, true));
             }
         }
     }

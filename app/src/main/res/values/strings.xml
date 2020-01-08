@@ -347,4 +347,12 @@
     <string name="action_undo">Hoàn tác</string>
     <string name="msg_input_conversion_name">Nhập tên chuyển đổi và đơn vị!</string>
     <string name="label_unit_rate">Bằng %1$s đơn vị</string>
+    <string name="category_title_formatting">Định dạng kết quả</string>
+    <string name="preference_title_number_of_decimals">Số chữ số thập phân</string>
+    <string name="preference_title_decimal_separator">Dấu thập phân</string>
+    <string name="preference_title_group_separator">Phân tách giữa các số hàng nghìn</string>
+    <string name="sumary_decimal_places">Chọn số chữ số thập phân khi hiển thị kết quả</string>
+    <string name="sumary_decimal_separator">Chọn ký tự làm dấu thập phân trong kết quả</string>
+    <string name="sumary_group_separator">Chọn ký tự phân nhóm ba chữ số trong kết quả</string>
+    <string name="preference_title_display">Hiển thị</string>
 </resources>

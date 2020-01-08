@@ -107,11 +107,11 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                     String label = mEdtLabel.getText().toString();
                     double from, to;
                     if (mRbToBase.isChecked()) {
+                        from = Double.parseDouble(mEdtValue.getText().toString());
+                        to = 1 / from;
+                    } else {
                         to = Double.parseDouble(mEdtValue.getText().toString());
                         from = 1 / to;
-                    } else {
-                        from = Double.parseDouble(mEdtValue.getText().toString());
-                        to = 10 * from;
                     }
 
                     mUnit.setLabel(label);

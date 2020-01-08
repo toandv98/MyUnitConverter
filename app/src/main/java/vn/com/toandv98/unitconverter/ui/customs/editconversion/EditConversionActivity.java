@@ -26,6 +26,7 @@ import vn.com.toandv98.unitconverter.data.entities.CustomUnit;
 import vn.com.toandv98.unitconverter.ui.base.BaseActivity;
 
 import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_CONVERSION_ID;
+import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_IS_ADD;
 import static vn.com.toandv98.unitconverter.utils.Constrants.UNIT_DIALOG_TAG;
 
 public class EditConversionActivity extends BaseActivity<EditConversionContract.Presenter>
@@ -139,7 +140,7 @@ public class EditConversionActivity extends BaseActivity<EditConversionContract.
     @Override
     public void finishOk(boolean isAdd) {
         Intent result = new Intent();
-        result.putExtra("is_add", isAdd);
+        result.putExtra(EXTRA_NAME_IS_ADD, isAdd);
         setResult(RESULT_OK, result);
         finish();
     }

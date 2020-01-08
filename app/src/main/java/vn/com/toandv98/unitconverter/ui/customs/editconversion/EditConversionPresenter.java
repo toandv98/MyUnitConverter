@@ -45,6 +45,7 @@ public class EditConversionPresenter extends BasePresenter<EditConversionContrac
         if (label.trim().length() == 0 || mUnits.size() == 0) {
             view.showError();
         } else {
+            mNewConversion.setLabel(label);
             if (mIsAdd) {
                 dataManager.insertConversionWithUnits(mNewConversion, mUnits);
             } else {

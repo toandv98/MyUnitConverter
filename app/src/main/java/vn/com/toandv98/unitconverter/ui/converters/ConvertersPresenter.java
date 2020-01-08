@@ -1,5 +1,6 @@
 package vn.com.toandv98.unitconverter.ui.converters;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import vn.com.toandv98.unitconverter.data.IDataManager;
@@ -20,8 +21,9 @@ public class ConvertersPresenter extends BasePresenter<ConvertersContract.View, 
     private List<Unit> mUnits;
     private int mConversionId;
     private CharSequence mCurrentInput = DEFAULT_INPUT;
-    private Unit mInputUnit;
-    private Unit mResultUnit;
+    private Unit mInputUnit, mResultUnit;
+    private DecimalFormat mDecimalFormat;
+
 
     public ConvertersPresenter(ConvertersContract.View view, IDataManager dataManager) {
         super(view, dataManager);
@@ -44,6 +46,9 @@ public class ConvertersPresenter extends BasePresenter<ConvertersContract.View, 
         view.updateInputUnit(mInputUnit.getLabelRes(), mInputUnit.getLabelCustom());
         view.updateResultUnit(mResultUnit.getLabelRes(), mResultUnit.getLabelCustom());
         view.updateResultValue(DEFAULT_INPUT);
+
+        mDecimalFormat = ConvertUtils.getDecimalFormat(dataManager.getDecimalPlaces(),
+                dataManager.getDecimalSeparator(), dataManager.getGroupingSeparator());
     }
 
     @Override
@@ -121,9 +126,9 @@ public class ConvertersPresenter extends BasePresenter<ConvertersContract.View, 
         String result = DEFAULT_INPUT;
         if (s.length() != 0 && !s.toString().equals(".")) {
             if (mConversionId == TEMPERATURE) {
-                result = ConvertUtils.convertTemperature(Double.parseDouble(s.toString()), mInputUnit, mResultUnit);
+                result = ConvertUtils.convertTemperature(Double.parseDouble(s.toString()), mInputUnit, mResultUnit, mDecimalFormat);
             } else {
-                result = ConvertUtils.convert(Double.parseDouble(s.toString()), mInputUnit, mResultUnit);
+                result = ConvertUtils.convert(Double.parseDouble(s.toString()), mInputUnit, mResultUnit, mDecimalFormat);
             }
         }
         view.updateResultValue(result);

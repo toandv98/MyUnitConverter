@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="setting_decimal_places">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string-array name="setting_decimal_separator">
+        <item>.</item>
+        <item>,</item>
+    </string-array>
+
+    <string-array name="setting_group_separator">
+        <item>,</item>
+        <item>.</item>
+        <item>space</item>
+    </string-array>
+</resources>

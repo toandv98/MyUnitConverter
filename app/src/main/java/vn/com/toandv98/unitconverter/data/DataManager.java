@@ -23,6 +23,8 @@ import vn.com.toandv98.unitconverter.data.entities.Unit;
 import vn.com.toandv98.unitconverter.data.entities.UnitRoom;
 import vn.com.toandv98.unitconverter.data.local.ConversionDao;
 import vn.com.toandv98.unitconverter.data.local.ConversionDataBase;
+import vn.com.toandv98.unitconverter.data.local.IPreferencesHelper;
+import vn.com.toandv98.unitconverter.data.local.PreferencesHelper;
 import vn.com.toandv98.unitconverter.data.remote.RetrofitClient;
 import vn.com.toandv98.unitconverter.services.UpdateCurrencyService;
 
@@ -34,10 +36,12 @@ public class DataManager implements IDataManager {
 
     private Context mContext;
     private ConversionDao mConversionDao;
+    private IPreferencesHelper mPreferencesHelper;
 
     public DataManager(Context mContext) {
         this.mContext = mContext;
         mConversionDao = ConversionDataBase.getINSTANCE(mContext).conversionDao();
+        mPreferencesHelper = new PreferencesHelper(mContext);
     }
 
     @Override
@@ -150,6 +154,21 @@ public class DataManager implements IDataManager {
     @Override
     public void deleteConversions(CustomConversion custom) {
         mConversionDao.deleteConversions(custom);
+    }
+
+    @Override
+    public int getDecimalPlaces() {
+        return mPreferencesHelper.getDecimalPlaces();
+    }
+
+    @Override
+    public char getDecimalSeparator() {
+        return mPreferencesHelper.getDecimalSeparator();
+    }
+
+    @Override
+    public char getGroupingSeparator() {
+        return mPreferencesHelper.getGroupingSeparator();
     }
 
 

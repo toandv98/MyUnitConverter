@@ -1,5 +1,7 @@
 package vn.com.toandv98.unitconverter.utils;
 
+import android.content.SharedPreferences;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -17,32 +19,33 @@ import static vn.com.toandv98.unitconverter.utils.Constrants.REAUMUR;
 import static vn.com.toandv98.unitconverter.utils.Constrants.ROMER;
 
 public final class ConvertUtils {
+    private SharedPreferences prefs;
 
     private ConvertUtils() {
     }
 
-    public static String convert(double value, Unit from, Unit to) {
+    public static String convert(double value, Unit from, Unit to, DecimalFormat format) {
         double result = value;
         if (from.getId() != to.getId()) {
             BigDecimal multiplier = new BigDecimal(from.getToBase()).multiply(new BigDecimal(to.getFromBase()));
             BigDecimal bdResult = new BigDecimal(value).multiply(multiplier);
             result = bdResult.doubleValue();
         }
-        return getDecimalFormat().format(result);
+        return format.format(result);
     }
 
-    public static String convertTemperature(double value, Unit from, Unit to) {
+    public static String convertTemperature(double value, Unit from, Unit to, DecimalFormat format) {
         double result = convertTemperatureValue(value, from, to);
-        return getDecimalFormat().format(result);
+        return format.format(result);
     }
 
-    private static DecimalFormat getDecimalFormat() {
+    public static DecimalFormat getDecimalFormat(int dG, char dS, char gS) {
         DecimalFormat formatter = new DecimalFormat();
-        formatter.setMaximumFractionDigits(5);
+        formatter.setMaximumFractionDigits(dG);
         DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
-        symbols.setDecimalSeparator('.');
+        symbols.setDecimalSeparator(dS);
         formatter.setGroupingUsed(true);
-        symbols.setGroupingSeparator(',');
+        symbols.setGroupingSeparator(gS);
         formatter.setDecimalFormatSymbols(symbols);
         return formatter;
     }

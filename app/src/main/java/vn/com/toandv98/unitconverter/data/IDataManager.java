@@ -37,4 +37,10 @@ public interface IDataManager {
     void updateHistory(int id);
 
     void deleteConversions(CustomConversion custom);
+
+    int getDecimalPlaces();
+
+    char getDecimalSeparator();
+
+    char getGroupingSeparator();
 }

@@ -17,7 +17,6 @@ import vn.com.toandv98.unitconverter.data.entities.CustomUnit;
 
 public class AddedUnitsAdapter extends RecyclerView.Adapter<AddedUnitsAdapter.AddedUnitViewHolder> {
 
-    private String mBaseUnit;
     private Context mContext;
     private List<CustomUnit> mData;
     private EditConversionContract.Presenter mPresenter;
@@ -40,7 +39,7 @@ public class AddedUnitsAdapter extends RecyclerView.Adapter<AddedUnitsAdapter.Ad
     public void onBindViewHolder(@NonNull AddedUnitViewHolder holder, int position) {
         CustomUnit unit = mData.get(position);
         holder.tvUnitName.setText(unit.getLabel());
-        holder.tvUnitValue.setText(mContext.getString(R.string.label_unit_rate, String.valueOf(unit.getFromBase())));
+        holder.tvUnitValue.setText(mContext.getString(R.string.label_unit_rate, String.valueOf(unit.getToBase())));
     }
 
     @Override
