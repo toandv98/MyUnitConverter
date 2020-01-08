@@ -355,4 +355,8 @@
     <string name="sumary_decimal_separator">Chọn ký tự làm dấu thập phân trong kết quả</string>
     <string name="sumary_group_separator">Chọn ký tự phân nhóm ba chữ số trong kết quả</string>
     <string name="preference_title_display">Hiển thị</string>
+    <string name="preference_title_other">Thông tin khác</string>
+    <string name="preference_title_about">Thông tin ứng dụng</string>
+    <string name="text_button_ok">Ok</string>
+    <string name="about_content">Ko có thông tin gì :v</string>
 </resources>
