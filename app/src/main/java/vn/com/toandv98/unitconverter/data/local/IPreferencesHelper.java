@@ -6,4 +6,6 @@ public interface IPreferencesHelper {
     char getDecimalSeparator();
 
     char getGroupingSeparator();
+
+    String getThemePreference();
 }
