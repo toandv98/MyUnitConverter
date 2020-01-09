@@ -6,6 +6,10 @@ public final class Constrants {
     public static final String MAP_QUERY_KEY = "access_key";
     public static final String FIXED_IO_API_KEY = "4d5ea680acced9486937ad055d448064";
 
+    public static final String THEME_BLUE = "blue";
+    public static final String THEME_GREEN = "green";
+    public static final String THEME_DARK = "dark";
+
     public static final String EXTRA_NAME_CONVERSION_ID = "conversion_id";
     public static final String EXTRA_NAME_IS_ADD = "is_add";
     public static final String EXTRA_NAME_RESULT_MSG = "result_msg";

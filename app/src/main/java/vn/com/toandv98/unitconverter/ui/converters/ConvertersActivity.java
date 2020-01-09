@@ -27,6 +27,7 @@ import java.util.Objects;
 
 import vn.com.toandv98.unitconverter.R;
 import vn.com.toandv98.unitconverter.data.DataManager;
+import vn.com.toandv98.unitconverter.data.IDataManager;
 import vn.com.toandv98.unitconverter.data.entities.Unit;
 import vn.com.toandv98.unitconverter.ui.base.BaseActivity;
 import vn.com.toandv98.unitconverter.ui.converters.unitsearch.UnitSearchContract;
@@ -38,6 +39,9 @@ import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_RESULT_M
 import static vn.com.toandv98.unitconverter.utils.Constrants.FRAG_UNIT_SEARCH_NAME;
 import static vn.com.toandv98.unitconverter.utils.Constrants.INPUT_UNIT;
 import static vn.com.toandv98.unitconverter.utils.Constrants.RESULT_UNIT;
+import static vn.com.toandv98.unitconverter.utils.Constrants.THEME_BLUE;
+import static vn.com.toandv98.unitconverter.utils.Constrants.THEME_DARK;
+import static vn.com.toandv98.unitconverter.utils.Constrants.THEME_GREEN;
 
 public class ConvertersActivity extends BaseActivity<ConvertersContract.Presenter>
         implements ConvertersContract.View, UnitSearchContract.OnFinishListener {
@@ -49,8 +53,24 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
     private TextView mTvInputUnit, mTvResultUnit;
     private RecyclerView mRvFromUnit, mRvToUnit;
     private UnitsAdapter mAdapterFrom, mAdapterTo;
+    private IDataManager mDataManager;
 
     //region onCreate()
+    @Override
+    protected int getStyleRes() {
+        mDataManager = new DataManager(this);
+        switch (mDataManager.getThemePreference()) {
+            case THEME_BLUE:
+                return R.style.AppThemeBlue;
+            case THEME_GREEN:
+                return R.style.AppThemeGreen;
+            case THEME_DARK:
+                return R.style.AppThemeDark;
+            default:
+                return 0;
+        }
+    }
+
     @Override
     protected int getLayout() {
         return R.layout.activity_converters;
@@ -58,7 +78,7 @@ public class ConvertersActivity extends BaseActivity<ConvertersContract.Presente
 
     @Override
     protected ConvertersContract.Presenter initPresenter() {
-        return new ConvertersPresenter(this, new DataManager(this));
+        return new ConvertersPresenter(this, mDataManager);
     }
 
     @Override

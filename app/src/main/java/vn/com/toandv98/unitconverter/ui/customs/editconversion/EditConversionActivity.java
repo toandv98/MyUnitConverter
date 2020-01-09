@@ -22,11 +22,15 @@ import java.util.List;
 
 import vn.com.toandv98.unitconverter.R;
 import vn.com.toandv98.unitconverter.data.DataManager;
+import vn.com.toandv98.unitconverter.data.IDataManager;
 import vn.com.toandv98.unitconverter.data.entities.CustomUnit;
 import vn.com.toandv98.unitconverter.ui.base.BaseActivity;
 
 import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_CONVERSION_ID;
 import static vn.com.toandv98.unitconverter.utils.Constrants.EXTRA_NAME_IS_ADD;
+import static vn.com.toandv98.unitconverter.utils.Constrants.THEME_BLUE;
+import static vn.com.toandv98.unitconverter.utils.Constrants.THEME_DARK;
+import static vn.com.toandv98.unitconverter.utils.Constrants.THEME_GREEN;
 import static vn.com.toandv98.unitconverter.utils.Constrants.UNIT_DIALOG_TAG;
 
 public class EditConversionActivity extends BaseActivity<EditConversionContract.Presenter>
@@ -37,6 +41,22 @@ public class EditConversionActivity extends BaseActivity<EditConversionContract.
     private AddedUnitsAdapter mAdapter;
     private TextView mTvNoUnit;
     private ConstraintLayout mContainerView;
+    private IDataManager mDataManager;
+
+    @Override
+    protected int getStyleRes() {
+        mDataManager = new DataManager(this);
+        switch (mDataManager.getThemePreference()) {
+            case THEME_BLUE:
+                return R.style.AppThemeActionBarBlue;
+            case THEME_GREEN:
+                return R.style.AppThemeActionBarGreen;
+            case THEME_DARK:
+                return R.style.AppThemeActionBarDark;
+            default:
+                return 0;
+        }
+    }
 
     @Override
     protected int getLayout() {
@@ -45,7 +65,7 @@ public class EditConversionActivity extends BaseActivity<EditConversionContract.
 
     @Override
     protected EditConversionContract.Presenter initPresenter() {
-        return new EditConversionPresenter(this, new DataManager(this));
+        return new EditConversionPresenter(this, mDataManager);
     }
 
     @Override

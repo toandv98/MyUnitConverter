@@ -42,7 +42,7 @@
                 android:drawablePadding="@dimen/padding_10dp"
                 android:paddingStart="@dimen/padding_10dp"
                 android:paddingEnd="@dimen/padding_10dp"
-                android:text="@string/text_button_ok" />
+                android:text="@android:string/ok" />
 
         </LinearLayout>
 

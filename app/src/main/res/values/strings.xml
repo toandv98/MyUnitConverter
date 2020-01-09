@@ -18,8 +18,8 @@
     <string name="item_title_energy">Năng lượng</string>
     <string name="item_title_currency">Tiền tệ</string>
     <string name="search_hint">Tìm kiếm …</string>
-    <string name="label_from">From</string>
-    <string name="label_to">To</string>
+    <string name="label_from">Từ</string>
+    <string name="label_to">Đến</string>
     <string name="title_item_swap">Swap</string>
     <string name="blank"> </string>
 
@@ -357,6 +357,14 @@
     <string name="preference_title_display">Hiển thị</string>
     <string name="preference_title_other">Thông tin khác</string>
     <string name="preference_title_about">Thông tin ứng dụng</string>
-    <string name="text_button_ok">Ok</string>
     <string name="about_content">Ko có thông tin gì :v</string>
+    <string name="sumary_app_theme">Chọn chủ đề cho giao diện ứng dụng</string>
+    <string name="preference_title_theme">Chủ đề</string>
+    <string name="description_icon_random">Icon random</string>
+    <string name="tools_label_random_number">Random Number</string>
+    <string name="defaut_random_from">1</string>
+    <string name="default_ramdom_to">10</string>
+    <string name="default_random_result">\??</string>
+    <string name="msg_cannot_empty">Không được bỏ trống!</string>
+    <string name="title_random_number">Tạo số ngẫu nhiên</string>
 </resources>

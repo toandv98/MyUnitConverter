@@ -20,4 +20,29 @@
         <item>.</item>
         <item>space</item>
     </string-array>
+
+    <string-array name="setting_theme">
+        <item name="0">Blue</item>
+        <item name="1">Green</item>
+        <item name="2">Dark</item>
+    </string-array>
+
+    <string-array name="setting_theme_value">
+        <item name="0">blue</item>
+        <item name="1">green</item>
+        <item name="2">dark</item>
+    </string-array>
+
+    <integer-array name="android_colors">
+        <item>@color/blue</item>
+        <item>@color/purple</item>
+        <item>@color/green</item>
+        <item>@color/orange</item>
+        <item>@color/red</item>
+        <item>@color/darkblue</item>
+        <item>@color/darkpurple</item>
+        <item>@color/darkgreen</item>
+        <item>@color/darkorange</item>
+        <item>@color/darkred</item>
+    </integer-array>
 </resources>

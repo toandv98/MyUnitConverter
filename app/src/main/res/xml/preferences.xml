@@ -10,31 +10,43 @@
             android:defaultValue="3"
             android:entries="@array/setting_decimal_places"
             android:entryValues="@array/setting_decimal_places"
+            android:icon="@drawable/ic_subdirectory_arrow_right_blue"
             android:key="decimal_places"
             android:summary="@string/sumary_decimal_places"
-            android:title="@string/preference_title_number_of_decimals"
-            app:allowDividerAbove="true"
-            app:iconSpaceReserved="false" />
+            android:title="@string/preference_title_number_of_decimals" />
 
         <ListPreference
             android:defaultValue="."
             android:entries="@array/setting_decimal_separator"
             android:entryValues="@array/setting_decimal_separator"
+            android:icon="@drawable/ic_subdirectory_arrow_right_blue"
             android:key="decimal_separator"
             android:summary="@string/sumary_decimal_separator"
-            android:title="@string/preference_title_decimal_separator"
-            app:allowDividerAbove="true"
-            app:iconSpaceReserved="false" />
+            android:title="@string/preference_title_decimal_separator" />
 
         <ListPreference
             android:defaultValue=","
             android:entries="@array/setting_group_separator"
             android:entryValues="@array/setting_group_separator"
+            android:icon="@drawable/ic_subdirectory_arrow_right_blue"
             android:key="group_separator"
             android:summary="@string/sumary_group_separator"
-            android:title="@string/preference_title_group_separator"
-            app:allowDividerAbove="true"
-            app:iconSpaceReserved="false" />
+            android:title="@string/preference_title_group_separator" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/preference_title_display"
+        app:iconSpaceReserved="false">
+
+        <ListPreference
+            android:defaultValue="blue"
+            android:entries="@array/setting_theme"
+            android:entryValues="@array/setting_theme_value"
+            android:icon="@drawable/ic_brush_blue"
+            android:key="preference_theme"
+            android:summary="@string/sumary_app_theme"
+            android:title="@string/preference_title_theme" />
 
     </PreferenceCategory>
 
@@ -43,16 +55,14 @@
         app:iconSpaceReserved="false">
 
         <Preference
+            android:icon="@drawable/ic_info_outline_blue"
             android:key="about_dialog"
-            android:title="@string/preference_title_about"
-            app:allowDividerAbove="true"
-            app:iconSpaceReserved="false" />
+            android:title="@string/preference_title_about" />
 
         <PreferenceScreen
+            android:icon="@drawable/ic_link_blue"
             android:summary="https://github.com/toandv98/MyUnitConverter.git"
-            android:title="Source code"
-            app:allowDividerAbove="true"
-            app:iconSpaceReserved="false">
+            android:title="Source code">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://github.com/toandv98/MyUnitConverter.git" />

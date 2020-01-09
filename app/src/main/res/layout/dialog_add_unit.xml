@@ -26,7 +26,7 @@
                 android:layout_marginEnd="@dimen/margin_5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_profile_dialog_title">
+                app:layout_constraintTop_toBottomOf="@+id/tv_add_unit_dialog_title">
 
                 <EditText
                     android:id="@+id/edt_dialog_unit_name"
@@ -39,7 +39,7 @@
 
 
             <TextView
-                android:id="@+id/tv_profile_dialog_title"
+                android:id="@+id/tv_add_unit_dialog_title"
                 style="@style/DialogTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -60,6 +60,7 @@
                 android:paddingStart="@dimen/padding_10dp"
                 android:paddingEnd="@dimen/padding_10dp"
                 android:text="@string/text_button_save"
+                android:textColor="@color/text_color_white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -121,10 +122,11 @@
         android:id="@+id/fab_unit_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/bg_white"
+        android:backgroundTint="?android:attr/colorBackground"
         android:clickable="true"
         android:focusable="true"
         app:fabSize="mini"
+        android:tint="?attr/colorAccent"
         app:layout_anchor="@+id/cardView2"
         app:layout_anchorGravity="end|top"
         app:srcCompat="@drawable/ic_close_orange" />

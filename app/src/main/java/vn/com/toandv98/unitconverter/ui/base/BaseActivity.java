@@ -5,7 +5,9 @@ import android.widget.Toast;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import vn.com.toandv98.unitconverter.R;
 
@@ -16,6 +18,8 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
     @Override
     protected final void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(getStyleRes());
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         setContentView(getLayout());
         presenter = initPresenter();
         initView();
@@ -28,6 +32,9 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
         presenter.onViewDetached();
         super.onDestroy();
     }
+
+    @StyleRes
+    protected abstract int getStyleRes();
 
     @LayoutRes
     protected abstract int getLayout();

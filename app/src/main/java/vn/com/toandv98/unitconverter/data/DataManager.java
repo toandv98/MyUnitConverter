@@ -171,6 +171,11 @@ public class DataManager implements IDataManager {
         return mPreferencesHelper.getGroupingSeparator();
     }
 
+    @Override
+    public String getThemePreference() {
+        return mPreferencesHelper.getThemePreference();
+    }
+
 
     @StringRes
     private int toStringResId(String name) {

@@ -35,7 +35,6 @@ public abstract class BaseFragment<P extends IBasePresenter> extends Fragment im
     public final View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(getLayout(), container, false);
-
         presenter = initPresenter();
         initView(view);
         setupView(savedInstanceState);

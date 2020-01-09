@@ -14,7 +14,6 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
 
@@ -30,9 +29,7 @@
         </activity>
         <activity android:name=".ui.main.MainActivity" />
         <activity android:name=".ui.converters.ConvertersActivity" />
-        <activity
-            android:name=".ui.customs.editconversion.EditConversionActivity"
-            android:theme="@style/AppThemeActionBar" />
+        <activity android:name=".ui.customs.editconversion.EditConversionActivity" />
 
         <service
             android:name=".services.UpdateCurrencyService"

@@ -43,4 +43,6 @@ public interface IDataManager {
     char getDecimalSeparator();
 
     char getGroupingSeparator();
+
+    String getThemePreference();
 }

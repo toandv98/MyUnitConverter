@@ -11,17 +11,38 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import vn.com.toandv98.unitconverter.R;
 import vn.com.toandv98.unitconverter.data.DataManager;
+import vn.com.toandv98.unitconverter.data.IDataManager;
 import vn.com.toandv98.unitconverter.ui.base.BaseActivity;
 import vn.com.toandv98.unitconverter.ui.conversion.ConversionFragment;
 import vn.com.toandv98.unitconverter.ui.customs.CustomFragment;
 import vn.com.toandv98.unitconverter.ui.setting.SettingFragment;
 import vn.com.toandv98.unitconverter.ui.tool.ToolsFragment;
 
+import static vn.com.toandv98.unitconverter.utils.Constrants.THEME_BLUE;
+import static vn.com.toandv98.unitconverter.utils.Constrants.THEME_DARK;
+import static vn.com.toandv98.unitconverter.utils.Constrants.THEME_GREEN;
+
 public class MainActivity extends BaseActivity<MainContract.Presenter>
         implements MainContract.View, BottomNavigationView.OnNavigationItemSelectedListener {
 
     private FragmentManager mFragmentManager;
     private BottomNavigationView mNavigationView;
+    private IDataManager mDataManager;
+
+    @Override
+    protected int getStyleRes() {
+        mDataManager = new DataManager(this);
+        switch (mDataManager.getThemePreference()) {
+            case THEME_BLUE:
+                return R.style.AppThemeBlue;
+            case THEME_GREEN:
+                return R.style.AppThemeGreen;
+            case THEME_DARK:
+                return R.style.AppThemeDark;
+            default:
+                return 0;
+        }
+    }
 
     @Override
     protected int getLayout() {
@@ -30,7 +51,7 @@ public class MainActivity extends BaseActivity<MainContract.Presenter>
 
     @Override
     protected MainContract.Presenter initPresenter() {
-        return new MainPresenter(this, new DataManager(this));
+        return new MainPresenter(this, mDataManager);
     }
 
     @Override
@@ -69,9 +90,16 @@ public class MainActivity extends BaseActivity<MainContract.Presenter>
                 break;
         }
         if (fragment != null) {
+            clearBackStack();
             mFragmentManager.beginTransaction().replace(R.id.fl_home, fragment).commit();
             return true;
         }
         return false;
+    }
+
+    public void clearBackStack() {
+        for (int i = 0; i < mFragmentManager.getBackStackEntryCount(); ++i) {
+            mFragmentManager.popBackStack();
+        }
     }
 }
