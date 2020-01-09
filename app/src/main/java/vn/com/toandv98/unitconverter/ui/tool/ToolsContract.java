@@ -5,10 +5,10 @@ import vn.com.toandv98.unitconverter.ui.base.IBaseView;
 
 public interface ToolsContract {
     interface View extends IBaseView {
-
+        void navigateToRandomFragment();
     }
 
     interface Presenter extends IBasePresenter {
-
+        void onRandomNumberClick();
     }
 }
